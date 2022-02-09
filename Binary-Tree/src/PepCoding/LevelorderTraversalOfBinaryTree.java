@@ -1,7 +1,7 @@
 import java.util.*;
-public class BinaryTreeLevelOrderTraversal_102 {
-   
-     public static class Node {
+public class LevelorderTraversalOfBinaryTree {
+
+    public static class Node {
         int data;
         Node left;
         Node right;
@@ -77,19 +77,16 @@ public class BinaryTreeLevelOrderTraversal_102 {
         Integer[]arr = {50,25,12,null,null,37,30,null,null,null,75,62,null,70,null,null,87,null,null};
         Node root = construct(arr);
         display(root);
-        List<List<Integer>> ans=levelOrder(root);
-        System.out.println(ans);
+        LevelOrderTraversal(root);
     }
-    
-    public static List<List<Integer>> levelOrder(Node root) {
+
+    public static void LevelOrderTraversal(Node root) {
         Queue<Node> mainQueue=new ArrayDeque<>();
         Queue<Node> childQueue=new ArrayDeque<>();
-        List<List<Integer>> output=new ArrayList<List<Integer>>();
         mainQueue.add(root);
-        List<Integer> newlist= new ArrayList<>();
         while(!mainQueue.isEmpty()) {
             Node currentNode=mainQueue.remove();
-            newlist.add(currentNode.data);
+            System.out.print(currentNode.data+"  ");
             if(currentNode!=null && currentNode.left!=null){
                 childQueue.add(currentNode.left);
             }
@@ -97,13 +94,11 @@ public class BinaryTreeLevelOrderTraversal_102 {
                 childQueue.add(currentNode.right);
             }
             if(mainQueue.isEmpty()) {
-                output.add(newlist);  
-                newlist=new ArrayList<>();
+                System.out.println("");
                 while(!childQueue.isEmpty()){
                     mainQueue.add(childQueue.remove());
                 }
             }
         }
-        return output;
-    }
+    } 
 }

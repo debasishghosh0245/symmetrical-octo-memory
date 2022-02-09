@@ -1,7 +1,7 @@
 import java.util.*;
-public class BinaryTreeLevelOrderTraversal_102 {
-   
-     public static class Node {
+public class MinimumDepthOfBinaryTree_111{
+    
+    public static class Node {
         int data;
         Node left;
         Node right;
@@ -10,12 +10,7 @@ public class BinaryTreeLevelOrderTraversal_102 {
             this.left = left;
             this.right = right;
         }
-        
-        Node(int data) {
-            this.data=data;
-        }
     }
-
     public static class Pair {
         Node node;
         int state;
@@ -24,7 +19,6 @@ public class BinaryTreeLevelOrderTraversal_102 {
             this.state = state;
         }
     }
-
     public static Node construct(Integer[] arr) {
         Node root = new Node(arr[0], null, null);
         Pair rtp = new Pair(root, 1);
@@ -59,10 +53,9 @@ public class BinaryTreeLevelOrderTraversal_102 {
         }
         return root;
     }
-
     public static void display(Node node) {
         if (node == null) {
-          return;
+            return;
         }
         String str = "";
         str += node.left == null ? "." : node.left.data + "";
@@ -72,38 +65,27 @@ public class BinaryTreeLevelOrderTraversal_102 {
         display(node.left);
         display(node.right);
     }
-
     public static void main(String[] args) throws Exception {
-        Integer[]arr = {50,25,12,null,null,37,30,null,null,null,75,62,null,70,null,null,87,null,null};
+        Integer[]arr = {2,null,3,null,4,null,5,null,6,null,null};
         Node root = construct(arr);
         display(root);
-        List<List<Integer>> ans=levelOrder(root);
-        System.out.println(ans);
+        System.out.println("Minimum Depth of Binary Tree >> "+minDepth(root));
     }
     
-    public static List<List<Integer>> levelOrder(Node root) {
-        Queue<Node> mainQueue=new ArrayDeque<>();
-        Queue<Node> childQueue=new ArrayDeque<>();
-        List<List<Integer>> output=new ArrayList<List<Integer>>();
-        mainQueue.add(root);
-        List<Integer> newlist= new ArrayList<>();
-        while(!mainQueue.isEmpty()) {
-            Node currentNode=mainQueue.remove();
-            newlist.add(currentNode.data);
-            if(currentNode!=null && currentNode.left!=null){
-                childQueue.add(currentNode.left);
-            }
-            if(currentNode!=null && currentNode.right!=null){
-                childQueue.add(currentNode.right);
-            }
-            if(mainQueue.isEmpty()) {
-                output.add(newlist);  
-                newlist=new ArrayList<>();
-                while(!childQueue.isEmpty()){
-                    mainQueue.add(childQueue.remove());
-                }
-            }
+    public static int minDepth(Node root) {
+        if (root == null) {
+            return 0;
         }
-        return output;
+        if ((root.left == null) && (root.right == null)) {
+            return 1;
+        }
+        int min_depth = Integer.MAX_VALUE;
+        if (root.left != null) {
+            min_depth = Math.min(minDepth(root.left), min_depth);
+        }
+        if (root.right != null) {
+            min_depth = Math.min(minDepth(root.right), min_depth);
+        }
+        return min_depth + 1;
     }
 }

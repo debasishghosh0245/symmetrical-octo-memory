@@ -1,7 +1,9 @@
+import java.io.*;
 import java.util.*;
-public class BinaryTreeLevelOrderTraversal_102 {
-   
-     public static class Node {
+
+public class SumOfBinaryTree {
+    
+    public static class Node {
         int data;
         Node left;
         Node right;
@@ -9,10 +11,6 @@ public class BinaryTreeLevelOrderTraversal_102 {
             this.data = data;
             this.left = left;
             this.right = right;
-        }
-        
-        Node(int data) {
-            this.data=data;
         }
     }
 
@@ -62,7 +60,7 @@ public class BinaryTreeLevelOrderTraversal_102 {
 
     public static void display(Node node) {
         if (node == null) {
-          return;
+            return;
         }
         String str = "";
         str += node.left == null ? "." : node.left.data + "";
@@ -77,33 +75,15 @@ public class BinaryTreeLevelOrderTraversal_102 {
         Integer[]arr = {50,25,12,null,null,37,30,null,null,null,75,62,null,70,null,null,87,null,null};
         Node root = construct(arr);
         display(root);
-        List<List<Integer>> ans=levelOrder(root);
-        System.out.println(ans);
+        System.out.println("Sum Of Binary Tree "+sum(root));
     }
-    
-    public static List<List<Integer>> levelOrder(Node root) {
-        Queue<Node> mainQueue=new ArrayDeque<>();
-        Queue<Node> childQueue=new ArrayDeque<>();
-        List<List<Integer>> output=new ArrayList<List<Integer>>();
-        mainQueue.add(root);
-        List<Integer> newlist= new ArrayList<>();
-        while(!mainQueue.isEmpty()) {
-            Node currentNode=mainQueue.remove();
-            newlist.add(currentNode.data);
-            if(currentNode!=null && currentNode.left!=null){
-                childQueue.add(currentNode.left);
-            }
-            if(currentNode!=null && currentNode.right!=null){
-                childQueue.add(currentNode.right);
-            }
-            if(mainQueue.isEmpty()) {
-                output.add(newlist);  
-                newlist=new ArrayList<>();
-                while(!childQueue.isEmpty()){
-                    mainQueue.add(childQueue.remove());
-                }
-            }
-        }
-        return output;
+
+    public static int sum(Node root) {
+        if(root==null) return 0; 
+        int leftsum=sum(root.left);
+        int rightsum=sum(root.right);
+        int totalSum=leftsum+rightsum+root.data;
+        return totalSum;
     }
+
 }
