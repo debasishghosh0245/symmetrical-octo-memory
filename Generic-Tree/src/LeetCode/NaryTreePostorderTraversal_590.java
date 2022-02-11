@@ -1,5 +1,5 @@
 import java.util.*;
-public class IterativePreorderAndPostorderOfGenericTree {
+public class NaryTreePostorderTraversal_590 {
 	
 	private static class Node {
 		private int data;
@@ -41,7 +41,8 @@ public class IterativePreorderAndPostorderOfGenericTree {
 		int[] arr={10,20,-1,30,50,-1,60,-1,-1,40,-1,-1};
 		Node root=null;
 		root=construct(arr);
-		printPreOrderAndPostOrder(root);
+		List<Integer> list=printPostOrder(root);
+        System.out.println(list);
 	}
     
     public static class Pair {
@@ -53,27 +54,27 @@ public class IterativePreorderAndPostorderOfGenericTree {
         }
     }
     
-    public static  void printPreOrderAndPostOrder(Node root){
+    public static List<Integer> printPostOrder(Node root){
+		List<Integer> postorder =new ArrayList<>();
+        if(root==null) return postorder;
         Stack<Pair> stack = new Stack<>();
 		stack.push(new Pair(root, -1));
-		String preOrder = "";
-		String postOrder = "";
+		
 		while (!stack.isEmpty()) {
 			int cstate = stack.peek().state;
 			Node cnode = stack.peek().node;
 			if (cstate == -1) {
-				preOrder += cnode.data+" ";
 				stack.peek().state++;
-			} else if (cstate == cnode.children.size()) {
-				postOrder += cnode.data+" ";
+			} 
+            else if (cstate == cnode.children.size()) {
+				postorder.add(cnode.data);
 				stack.pop();
-				
-			} else if (cstate >= 0 && cstate < cnode.children.size()) {
+			}
+            else if (cstate >= 0 && cstate < cnode.children.size()) {
 				stack.peek().state++;
 				stack.push(new Pair(cnode.children.get(cstate), -1));
 			}
 		}
-		System.out.println("PreOrder >> "+preOrder);
-		System.out.println("PostOrder >> "+postOrder);
+        return postorder;
     }
 }

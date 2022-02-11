@@ -44,9 +44,7 @@ public class CeilAndFloorInAGenericTree {
 		}
 		return root;
 	}
-	
 
-		
 	public static void main(String[] args){
 		//int[] data={10,20,40,-1,50,-1,-1,30,60,-1,70,-1,-1};
 		int[] data={10,20,-50,-1,60,-1,-1,30,70,-1,-80,110,-1,-120,-1,-1,90,-1,-1,40,-100,-1,-1,-1};

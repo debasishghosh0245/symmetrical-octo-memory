@@ -1,7 +1,7 @@
 import java.util.*;
-public class BinaryTreeLevelOrderTraversal_102 {
-   
-     public static class Node {
+public class LevelorderTraversalOfBinaryTree {
+
+    public static class Node {
         int data;
         Node left;
         Node right;
@@ -76,20 +76,17 @@ public class BinaryTreeLevelOrderTraversal_102 {
     public static void main(String[] args) throws Exception {
         Integer[]arr = {50,25,12,null,null,37,30,null,null,null,75,62,null,70,null,null,87,null,null};
         Node root = construct(arr);
-        display(root);
-        List<List<Integer>> ans=levelOrder2(root);
-        System.out.println(ans);
+        //display(root);
+        LevelOrderTraversal3(root);
     }
-    
-    public static List<List<Integer>> levelOrder(Node root) {
+
+    public static void LevelOrderTraversal(Node root) {
         Queue<Node> mainQueue=new ArrayDeque<>();
         Queue<Node> childQueue=new ArrayDeque<>();
-        List<List<Integer>> output=new ArrayList<List<Integer>>();
         mainQueue.add(root);
-        List<Integer> newlist= new ArrayList<>();
         while(!mainQueue.isEmpty()) {
             Node currentNode=mainQueue.remove();
-            newlist.add(currentNode.data);
+            System.out.print(currentNode.data+"  ");
             if(currentNode!=null && currentNode.left!=null){
                 childQueue.add(currentNode.left);
             }
@@ -97,22 +94,21 @@ public class BinaryTreeLevelOrderTraversal_102 {
                 childQueue.add(currentNode.right);
             }
             if(mainQueue.isEmpty()) {
-                output.add(newlist);  
-                newlist=new ArrayList<>();
+                System.out.println("");
                 while(!childQueue.isEmpty()){
                     mainQueue.add(childQueue.remove());
                 }
             }
         }
-        return output;
-    }
+    } 
     
-    public static List<List<Integer>> levelOrder2(Node root) {
+    public static List<List<Integer>> LevelOrderTraversal2(Node root) {
         Queue<Node> mainQueue=new ArrayDeque<>();
         List<List<Integer>> list=new ArrayList<List<Integer>>();
         mainQueue.add(root);
         mainQueue.add(new Node(-1));
         List<Integer> temp=new ArrayList<>();
+        
         while(!mainQueue.isEmpty()) {
             Node currentNode=mainQueue.remove();
             if(currentNode.data!=-1) {
@@ -127,12 +123,34 @@ public class BinaryTreeLevelOrderTraversal_102 {
                 }
             }
             if(currentNode!=null && currentNode.left!=null){
-                mainQueue.add(currentNode.left);
+                  mainQueue.add(currentNode.left);
             }
             if(currentNode!=null && currentNode.right!=null){
-                mainQueue.add(currentNode.right);
+                   mainQueue.add(currentNode.right);
             }
         }
         return list;
-    }
+    } 
+    
+    /** Count Approach :: start **/ 
+    public static void  LevelOrderTraversal3(Node root) {
+        Queue<Node> mainQueue=new ArrayDeque<>();
+        List<List<Integer>> list=new ArrayList<List<Integer>>();
+        mainQueue.add(root);
+        while(!mainQueue.isEmpty()) {
+            int level=mainQueue.size();
+            for(int i=0;i<level';i++) {
+                Node currentNode=mainQueue.remove();
+                System.out.print(currentNode.data+" ");
+                if(currentNode!=null && currentNode.left!=null){
+                    mainQueue.add(currentNode.left);
+                }
+                if(currentNode!=null && currentNode.right!=null){
+                    mainQueue.add(currentNode.right);
+                }
+            } 
+            System.out.println("");
+        }
+    } 
+    /** Count Approach :: End **/ 
 }

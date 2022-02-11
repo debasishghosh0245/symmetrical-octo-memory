@@ -1,17 +1,18 @@
+import java.io.*;
 import java.util.*;
-public class BinaryTreePreOrderTraversal_144 {
-
+public class CreateLeftCloneTree {
+    
     public static class Node {
         int data;
         Node left;
         Node right;
+
         Node(int data, Node left, Node right) {
             this.data = data;
             this.left = left;
             this.right = right;
         }
     }
-    
     public static class Pair {
         Node node;
         int state;
@@ -20,7 +21,6 @@ public class BinaryTreePreOrderTraversal_144 {
             this.state = state;
        }
     }
-    
     public static Node construct(Integer[] arr) {
         Node root = new Node(arr[0], null, null);
         Pair rtp = new Pair(root, 1);
@@ -61,49 +61,27 @@ public class BinaryTreePreOrderTraversal_144 {
             return;
         }
         String str = "";
-        str += node.left == null ? "." : node.left.data + "";
+        str += node.left == null ? "-" : node.left.data + "";
         str += " <- " + node.data + " -> ";
-        str += node.right == null ? "." : node.right.data + "";
+        str += node.right == null ? "-" : node.right.data + "";
         System.out.println(str);
         display(node.left);
         display(node.right);
     }
 
     public static void main(String[] args) throws Exception {
-        Integer[]arr = {50,25,12,null,null,37,null,null,75,62,null,null,87,null,null};
+        Integer[] arr={1,2,5,null,null,6,null,null,3,null,4,null,null};
         Node root = construct(arr);
-        List<Integer> list=printPreOrder(root);
-        System.out.println(list);
+        root=createLeftCloneTree(root);
+        display(root);
     }
-
-    public static List<Integer> printPreOrder(Node root){
-        Stack<Pair> stack = new Stack<>();
-		stack.push(new Pair(root, 1));
-		List<Integer> preorder=new ArrayList<>();
-        List<Integer> inorder=new ArrayList<>();
-		List<Integer> postorder=new ArrayList<>();
-		while (!stack.isEmpty()) {
-			int cstate = stack.peek().state;
-			Node cnode = stack.peek().node;
-			if(cstate == 1) {
-                preorder.add(cnode.data);
-				stack.peek().state++;
-                if(null!=cnode.left){
-                     stack.push(new Pair(cnode.left,1));
-                }
-			} 
-            else if (cstate == 2) {
-                inorder.add(cnode.data);
-                stack.peek().state++;
-                if(null!=cnode.right){
-                    stack.push(new Pair(cnode.right,1));
-                }
-			} 
-            else if (cstate==3) {
-                postorder.add(cnode.data);
-				stack.pop();
-			}
-		}
-        return preorder;
+    
+    public static Node createLeftCloneTree(Node root){
+        if(root==null) return null;
+            Node leftcloned =createLeftCloneTree(root.left);
+            Node rightcloned=createLeftCloneTree(root.right);
+            root.left=new Node(root.data,leftcloned,null);
+            root.right=rightcloned;
+        return root;
     }
 }
