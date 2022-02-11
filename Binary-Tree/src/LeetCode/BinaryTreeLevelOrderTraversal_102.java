@@ -77,7 +77,7 @@ public class BinaryTreeLevelOrderTraversal_102 {
         Integer[]arr = {50,25,12,null,null,37,30,null,null,null,75,62,null,70,null,null,87,null,null};
         Node root = construct(arr);
         display(root);
-        List<List<Integer>> ans=levelOrder(root);
+        List<List<Integer>> ans=levelOrder2(root);
         System.out.println(ans);
     }
     
@@ -105,5 +105,34 @@ public class BinaryTreeLevelOrderTraversal_102 {
             }
         }
         return output;
+    }
+    
+    public static List<List<Integer>> levelOrder2(Node root) {
+        Queue<Node> mainQueue=new ArrayDeque<>();
+        List<List<Integer>> list=new ArrayList<List<Integer>>();
+        mainQueue.add(root);
+        mainQueue.add(new Node(-1));
+        List<Integer> temp=new ArrayList<>();
+        while(!mainQueue.isEmpty()) {
+            Node currentNode=mainQueue.remove();
+            if(currentNode.data!=-1) {
+               temp.add(currentNode.data);
+            }else{
+                if(!mainQueue.isEmpty()) {
+                   mainQueue.add(new Node(-1));
+                   System.out.println("");
+                   list.add(temp);
+                   temp=new ArrayList<>();
+                 
+                }
+            }
+            if(currentNode!=null && currentNode.left!=null){
+                mainQueue.add(currentNode.left);
+            }
+            if(currentNode!=null && currentNode.right!=null){
+                mainQueue.add(currentNode.right);
+            }
+        }
+        return list;
     }
 }

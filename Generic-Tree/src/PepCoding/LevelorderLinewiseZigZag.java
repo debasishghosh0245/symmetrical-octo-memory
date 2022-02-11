@@ -1,6 +1,6 @@
 import java.util.*;
 public class LevelorderLinewiseZigZag {
-
+    
 	private static class Node {
 		private int data;
 		private List<Node> children=new ArrayList<Node>();
@@ -45,59 +45,32 @@ public class LevelorderLinewiseZigZag {
 		Node root=null;
 		root=construct(data);
 		levelOrder(root);
-		
 	}
-	
+    
 	public static void levelOrder(Node node) {
-	/* 	Queue<Node> mainQueue = new ArrayDeque<>();
-		Stack<Node> chstack = new Stack<>();
-		mainQueue.add(root);
-		int level = 0;
-		while (!mainQueue.isEmpty()) {
-			Node currentNode = mainQueue.remove();
-			System.out.print(currentNode.data + " ");
-			if (level == 0) {
-				for (Node child : currentNode.children) {
-					chstack.push(child);
-				}
-			} else {
-				for (int i = currentNode.children.size() - 1; i >= 0; i--) {
-					chstack.push(currentNode.children.get(i));
-				}
-			}
-			if (mainQueue.isEmpty()) {
-				System.out.println(" ");
-				while (!chstack.isEmpty()) {
-					mainQueue.add(chstack.pop());
-				}
-				if(level==0) level=1;
-				else if(level==1) level=0;
-			}
-		} */
 		Stack<Node> ms = new Stack<>();
 		ms.push(node);
 		Stack<Node> cs = new Stack<>();
 		int level = 0;
-
 		while (ms.size() > 0) {
 			node=ms.pop();
 			System.out.print(node.data + " ");
 			if (level%2 == 1) {
-			for (int i = 0; i<node.children.size();i++) {
-				cs.push(node.children.get(i));
-			}
-		}
-		else {
-			for (int i = node.children.size() - 1; i >= 0; i--) {
-				cs.push(node.children.get(i));
-			}
-		}
-		if (ms.size() == 0) {
-			ms = cs;
-			cs = new Stack< >();
-			level++;
-			System.out.println();
-		}
-			}	
+                for (int i = 0; i<node.children.size();i++) {
+                    cs.push(node.children.get(i));
+                }
+            }
+            else {
+                for (int i = node.children.size() - 1; i >= 0; i--) {
+                    cs.push(node.children.get(i));
+                }
+            }
+            if (ms.size() == 0) {
+                ms = cs;
+                cs = new Stack< >();
+                level++;
+                System.out.println();
+		    }
+	    }	
 	}
 }

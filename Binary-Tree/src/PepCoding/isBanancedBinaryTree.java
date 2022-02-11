@@ -1,6 +1,9 @@
+import java.io.*;
 import java.util.*;
-public class BinaryTreePreOrderTraversal_144 {
-
+public class isBanancedBinaryTree {
+     
+    protected static boolean isbalancedbinarytree=true;
+    
     public static class Node {
         int data;
         Node left;
@@ -11,7 +14,6 @@ public class BinaryTreePreOrderTraversal_144 {
             this.right = right;
         }
     }
-    
     public static class Pair {
         Node node;
         int state;
@@ -20,7 +22,6 @@ public class BinaryTreePreOrderTraversal_144 {
             this.state = state;
        }
     }
-    
     public static Node construct(Integer[] arr) {
         Node root = new Node(arr[0], null, null);
         Pair rtp = new Pair(root, 1);
@@ -70,40 +71,26 @@ public class BinaryTreePreOrderTraversal_144 {
     }
 
     public static void main(String[] args) throws Exception {
-        Integer[]arr = {50,25,12,null,null,37,null,null,75,62,null,null,87,null,null};
+        //Integer[] arr={50,25,12,null,null,37,null,null,75,62,null,null,87,null,null};
+        Integer[] arr={50,25,12,13,null,null,null,null,75,null,87,null,90,null,null};
         Node root = construct(arr);
-        List<Integer> list=printPreOrder(root);
-        System.out.println(list);
+        display(root);
+        isBalancedBinaryTree(root);
+        System.out.println("Is Balanced Binary Tree >> "+isbalancedbinarytree);
+      
     }
-
-    public static List<Integer> printPreOrder(Node root){
-        Stack<Pair> stack = new Stack<>();
-		stack.push(new Pair(root, 1));
-		List<Integer> preorder=new ArrayList<>();
-        List<Integer> inorder=new ArrayList<>();
-		List<Integer> postorder=new ArrayList<>();
-		while (!stack.isEmpty()) {
-			int cstate = stack.peek().state;
-			Node cnode = stack.peek().node;
-			if(cstate == 1) {
-                preorder.add(cnode.data);
-				stack.peek().state++;
-                if(null!=cnode.left){
-                     stack.push(new Pair(cnode.left,1));
-                }
-			} 
-            else if (cstate == 2) {
-                inorder.add(cnode.data);
-                stack.peek().state++;
-                if(null!=cnode.right){
-                    stack.push(new Pair(cnode.right,1));
-                }
-			} 
-            else if (cstate==3) {
-                postorder.add(cnode.data);
-				stack.pop();
-			}
-		}
-        return preorder;
+    
+    public static int isBalancedBinaryTree(Node root) {
+         if(root==null) return -1;
+         int height=-1;
+         int leftnodeheight=isBalancedBinaryTree(root.left);
+         int rightnodeheight=isBalancedBinaryTree(root.right);
+         height=Math.max(leftnodeheight,rightnodeheight)+1;
+         int diff=Math.abs(leftnodeheight-rightnodeheight);
+         if(diff > 1) {
+            isbalancedbinarytree=false; 
+            return height;            
+         }       
+         return height;
     }
 }

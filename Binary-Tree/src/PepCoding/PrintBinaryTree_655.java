@@ -1,6 +1,7 @@
+import java.io.*;
 import java.util.*;
-public class BinaryTreePreOrderTraversal_144 {
-
+public class PrintBinaryTree_655 {
+        
     public static class Node {
         int data;
         Node left;
@@ -11,7 +12,6 @@ public class BinaryTreePreOrderTraversal_144 {
             this.right = right;
         }
     }
-    
     public static class Pair {
         Node node;
         int state;
@@ -20,7 +20,6 @@ public class BinaryTreePreOrderTraversal_144 {
             this.state = state;
        }
     }
-    
     public static Node construct(Integer[] arr) {
         Node root = new Node(arr[0], null, null);
         Pair rtp = new Pair(root, 1);
@@ -61,49 +60,56 @@ public class BinaryTreePreOrderTraversal_144 {
             return;
         }
         String str = "";
-        str += node.left == null ? "." : node.left.data + "";
+        str += node.left == null ? "null" : node.left.data + "";
         str += " <- " + node.data + " -> ";
-        str += node.right == null ? "." : node.right.data + "";
+        str += node.right == null ? "null" : node.right.data + "";
         System.out.println(str);
         display(node.left);
         display(node.right);
     }
 
     public static void main(String[] args) throws Exception {
-        Integer[]arr = {50,25,12,null,null,37,null,null,75,62,null,null,87,null,null};
+       
+        Integer[] arr={5,1,null,null,7,6,null,null,8,null,null};
         Node root = construct(arr);
-        List<Integer> list=printPreOrder(root);
-        System.out.println(list);
+        //display(root);
+        isBinarySearchTree(root);
+        System.out.println("Validate Binary Search Tree >> "+isbinarysearchtree);
     }
-
-    public static List<Integer> printPreOrder(Node root){
-        Stack<Pair> stack = new Stack<>();
-		stack.push(new Pair(root, 1));
-		List<Integer> preorder=new ArrayList<>();
-        List<Integer> inorder=new ArrayList<>();
-		List<Integer> postorder=new ArrayList<>();
-		while (!stack.isEmpty()) {
-			int cstate = stack.peek().state;
-			Node cnode = stack.peek().node;
-			if(cstate == 1) {
-                preorder.add(cnode.data);
-				stack.peek().state++;
-                if(null!=cnode.left){
-                     stack.push(new Pair(cnode.left,1));
-                }
-			} 
-            else if (cstate == 2) {
-                inorder.add(cnode.data);
-                stack.peek().state++;
-                if(null!=cnode.right){
-                    stack.push(new Pair(cnode.right,1));
-                }
-			} 
-            else if (cstate==3) {
-                postorder.add(cnode.data);
-				stack.pop();
-			}
-		}
-        return preorder;
+    
+    public static Node isBinarySearchTree(Node root){
+        
+        if(root==null) return null;
+        
+        if(root.left==null || root.right==null) return null;
+      
+        Node leftnode=null;
+        Node rightnode=null;
+        
+        if(null!=root && root.left!=null ) {
+            leftnode=isBinarySearchTree(root.left);
+        }
+        if(null!=root && root.right!=null) {
+            rightnode=isBinarySearchTree(root.left);
+        }
+        
+        System.out.println("root data >> "+root.data);
+        System.out.println("left node data >> "+leftnode.data);
+        System.out.println("right node data >> "+rightnode.data);
+        
+        if(leftnode!=null && root.data < leftnode.data ) {
+            isbinarysearchtree=false;
+            return root;
+        }
+        
+        if(rightnode!=null &&  root.data > rightnode.data) {
+           
+            isbinarysearchtree=false;
+            return root;
+        }
+        
+        return root;
     }
+    
+    
 }

@@ -1,5 +1,5 @@
 import java.util.*;
-public class LevelOrderLineWiseGenericTree {
+public class NaryTreeLevelOrderTraversal429 {
 
 	private static class Node {
 		private int data;
@@ -44,29 +44,32 @@ public class LevelOrderLineWiseGenericTree {
 		int[] data={10,20,-1,30,50,-1,60,-1,-1,40,-1};
 		Node root=null;
 		root=construct(data);
-		LevelOrderTraversal3(root);
+		List<List<Integer>> list=levelOrder(root);
+        System.out.println(list);
 		
 	}
 	
-	public static void levelOrder(Node root) {
+	public static List<List<Integer>> levelOrder(Node root) {
 		Queue<Node> mainQueue=new ArrayDeque<>();
 		Queue<Node> childQueue=new ArrayDeque<>();
-		mainQueue.add(root);
+        List<List<Integer>> list=new ArrayList<List<Integer>>();
+		List<Integer> temp=new ArrayList<>();
+        mainQueue.add(root);
 		while(!mainQueue.isEmpty()) {
 			Node currNode=mainQueue.remove();
-			System.out.print(currNode.data+" ");
+            temp.add(currNode.data);
 			for (Node child : currNode.children) {
-					childQueue.add(child);
+				childQueue.add(child);
 			}
 			if(mainQueue.isEmpty()) {
-				System.out.println(" ");
+                list.add(temp);
+                temp=new ArrayList<>();
 				while(!childQueue.isEmpty()) {
-					if(!childQueue.isEmpty() ) {
-						mainQueue.add(childQueue.remove());
-					}
+                    mainQueue.add(childQueue.remove());
 				}
 			}
 		}
+        return list;
 	}
     
     /** Count Approach :: start **/ 
