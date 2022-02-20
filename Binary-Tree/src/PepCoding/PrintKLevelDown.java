@@ -1,6 +1,5 @@
-import java.io.*;
 import java.util.*;
-public class DisplayBinaryTree {
+public class PrintKLevelDown {
     
     public static class Node {
         int data;
@@ -12,14 +11,16 @@ public class DisplayBinaryTree {
             this.right = right;
         }
     }
+
     public static class Pair {
         Node node;
         int state;
         Pair(Node node, int state) {
             this.node = node;
             this.state = state;
-       }
+        }
     }
+
     public static Node construct(Integer[] arr) {
         Node root = new Node(arr[0], null, null);
         Pair rtp = new Pair(root, 1);
@@ -29,17 +30,17 @@ public class DisplayBinaryTree {
         while (st.size() > 0) {
             Pair top = st.peek();
             if (top.state == 1) {
-            idx++;
-            if (arr[idx] != null) {
-                top.node.left = new Node(arr[idx], null, null);
-                Pair lp = new Pair(top.node.left, 1);
-            st.push(lp);
-            } else {
-                top.node.left = null;
-            }
-            top.state++;
-        } else if (top.state == 2) {
-            idx++;
+                idx++;
+                if (arr[idx] != null) {
+                    top.node.left = new Node(arr[idx], null, null);
+                    Pair lp = new Pair(top.node.left, 1);
+                    st.push(lp);
+                } else {
+                    top.node.left = null;
+                }
+                top.state++;
+            }  else if (top.state == 2) {
+                idx++;
             if (arr[idx] != null) {
                 top.node.right = new Node(arr[idx], null, null);
                 Pair rp = new Pair(top.node.right, 1);
@@ -47,11 +48,11 @@ public class DisplayBinaryTree {
             } else {
                 top.node.right = null;
             }
-            top.state++;
-        } else {
-            st.pop();
+                top.state++;
+            } else {
+                st.pop();
+            }
         }
-    }
         return root;
     }
 
@@ -69,8 +70,19 @@ public class DisplayBinaryTree {
     }
 
     public static void main(String[] args) throws Exception {
-        Integer[]arr = {50,25,12,null,null,37,30,null,null,null,75,62,null,70,null,null,87,null,null};
+        Integer[] arr = {50,25,12,null,null,37,30,null,null,40,null,null,
+        75,65,60,null,null,70,null,null,87,null,null};
         Node root = construct(arr);
-        display(root);
+        print(root,3);
+        
+    }
+
+    public static void print(Node root, int k){
+        if(root==null || k < 0) return;
+        if(k==0) {
+            System.out.print(root.data +" ");
+        }
+        print(root.left,k-1);
+        print(root.right,k-1);
     }
 }

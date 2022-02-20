@@ -1,8 +1,8 @@
-import java.io.*;
 import java.util.*;
-public class IsABinarySearchTree {
-    
-    public static class Node {
+
+public class ValidateBinarySearchTree_98 {
+
+      public static class Node {
         int data;
         Node left;
         Node right;
@@ -72,20 +72,23 @@ public class IsABinarySearchTree {
 
     public static void main(String[] args) throws Exception {
         
-        Integer[] arr={5,1,null,null,7,6,null,null,8,null,null};
+        //Integer[] arr={5,1,null,null,7,6,null,null,8,null,null};
         //Integer[] arr={2,10,null,null,3,null,null};
+        //Integer[] arr={5,1,null,null,4,3,null,null,6,null,null};
+        //Integer[] arr={2,2,null,null,2,null,null};
+        Integer[] arr={2147483647,null,null};
         Node root = construct(arr);
         BSTProp bstprop=isBinarySearchTree(root);
         System.out.println("Validate Binary Search Tree >> "+bstprop.isbst);
     }
     
-     protected static class BSTProp {
+    protected static class BSTProp {
         long max;
         long min;
         boolean isbst;
     }
     
-    protected static BSTProp isBinarySearchTree(Node root){
+    public static BSTProp isBinarySearchTree(Node root){
         if(root==null) { 
             BSTProp bstprop=new BSTProp();
             bstprop.min=Long.MAX_VALUE;

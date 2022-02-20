@@ -1,6 +1,6 @@
 import java.io.*;
 import java.util.*;
-public class IsABinarySearchTree {
+public class LongestZigzagPathInABinaryTree {
     
     public static class Node {
         int data;
@@ -12,7 +12,6 @@ public class IsABinarySearchTree {
             this.right = right;
         }
     }
-    
     public static class Pair {
         Node node;
         int state;
@@ -21,7 +20,6 @@ public class IsABinarySearchTree {
             this.state = state;
        }
     }
-    
     public static Node construct(Integer[] arr) {
         Node root = new Node(arr[0], null, null);
         Pair rtp = new Pair(root, 1);
@@ -62,48 +60,52 @@ public class IsABinarySearchTree {
             return;
         }
         String str = "";
-        str += node.left == null ? "null" : node.left.data + "";
+        str += node.left == null ? "." : node.left.data + "";
         str += " <- " + node.data + " -> ";
-        str += node.right == null ? "null" : node.right.data + "";
+        str += node.right == null ? "." : node.right.data + "";
         System.out.println(str);
         display(node.left);
         display(node.right);
     }
 
     public static void main(String[] args) throws Exception {
-        
-        Integer[] arr={5,1,null,null,7,6,null,null,8,null,null};
-        //Integer[] arr={2,10,null,null,3,null,null};
+        //Integer[] arr={3,2,null,3,null,null,3,null,1,null,null};
+        //Integer[] arr={1,null,null};
+        Integer[] arr={1,null,2,3,null,null,4,5,
+        null,5,null,7,null,null,8,null,null};
         Node root = construct(arr);
-        BSTProp bstprop=isBinarySearchTree(root);
-        System.out.println("Validate Binary Search Tree >> "+bstprop.isbst);
+        display(root);
+        NodeProp nodeprop=longestZigZag(root);
+        System.out.println("Longest Zig Zag Path >> "+nodeprop.maxDistance);
     }
     
-     protected static class BSTProp {
-        long max;
-        long min;
-        boolean isbst;
-    }
-    
-    protected static BSTProp isBinarySearchTree(Node root){
-        if(root==null) { 
-            BSTProp bstprop=new BSTProp();
-            bstprop.min=Long.MAX_VALUE;
-            bstprop.max=Long.MIN_VALUE;
-            bstprop.isbst=true;
-            return bstprop;
-        }     
-        BSTProp leftbst=isBinarySearchTree(root.left);
-        BSTProp rightbst=isBinarySearchTree(root.right);
-        BSTProp bstprop=new BSTProp();
-        bstprop.max=Math.max(root.data,Math.max(leftbst.max,rightbst.max));
-        bstprop.min=Math.min(root.data,Math.min(rightbst.min,leftbst.min));
-        if(leftbst.isbst && rightbst.isbst && 
-            root.data > leftbst.max && root.data < rightbst.min ){
-            bstprop.isbst=true;
-        }else{
-            bstprop.isbst=false;
+    private static class NodeProp{
+        int leftEdgEndedPthDist=-1;
+        int rightEdgEndedPthDist=-1;
+        int maxDistance=0;
+        NodeProp(){ }
+        NodeProp(int leftEdgEndedPthDist,int rightEdgEndedPthDist,int maxDistance){
+            this.leftEdgEndedPthDist=leftEdgEndedPthDist;
+            this.rightEdgEndedPthDist=rightEdgEndedPthDist;
+            this.maxDistance=maxDistance;
         }
-        return bstprop;
     }
+    //Time complexity >> O(2^n)
+    //Space complexity >> O(n)
+    public static NodeProp longestZigZag(Node root) {
+        if(root==null) {
+            NodeProp nodeprp=new NodeProp(-1,-1,0);
+            return nodeprp;
+        }
+        NodeProp left=longestZigZag(root.left);
+        NodeProp right=longestZigZag(root.right);
+        NodeProp nodeprp=new NodeProp();
+        nodeprp.leftEdgEndedPthDist=left.rightEdgEndedPthDist+1;
+        nodeprp.rightEdgEndedPthDist=right.leftEdgEndedPthDist+1;
+        int dist=Math.max(Math.max(left.rightEdgEndedPthDist,left.leftEdgEndedPthDist),
+        Math.max(right.rightEdgEndedPthDist,right.leftEdgEndedPthDist));
+        dist=Math.max(dist,Math.max(nodeprp.rightEdgEndedPthDist,nodeprp.leftEdgEndedPthDist));
+        nodeprp.maxDistance=dist;
+        return nodeprp;
+   }
 }

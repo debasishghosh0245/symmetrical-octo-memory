@@ -1,6 +1,6 @@
 import java.io.*;
 import java.util.*;
-public class IsABinarySearchTree {
+public class HouseRobberInBinaryTree {
     
     public static class Node {
         int data;
@@ -12,7 +12,6 @@ public class IsABinarySearchTree {
             this.right = right;
         }
     }
-    
     public static class Pair {
         Node node;
         int state;
@@ -21,7 +20,6 @@ public class IsABinarySearchTree {
             this.state = state;
        }
     }
-    
     public static Node construct(Integer[] arr) {
         Node root = new Node(arr[0], null, null);
         Pair rtp = new Pair(root, 1);
@@ -62,9 +60,9 @@ public class IsABinarySearchTree {
             return;
         }
         String str = "";
-        str += node.left == null ? "null" : node.left.data + "";
+        str += node.left == null ? "." : node.left.data + "";
         str += " <- " + node.data + " -> ";
-        str += node.right == null ? "null" : node.right.data + "";
+        str += node.right == null ? "." : node.right.data + "";
         System.out.println(str);
         display(node.left);
         display(node.right);
@@ -72,38 +70,36 @@ public class IsABinarySearchTree {
 
     public static void main(String[] args) throws Exception {
         
-        Integer[] arr={5,1,null,null,7,6,null,null,8,null,null};
-        //Integer[] arr={2,10,null,null,3,null,null};
+        Integer[] arr={3,2,null,3,null,null,3,null,1,null,null};
+        
+        //Integer[]arr = {3,4,1,null,null,3,null,null,5,null,1,null,null};
+        //Integer[]arr = {2,7,2,null,null,6,5,null,null,11,null,null,5,null,8,4,null,null,null};
         Node root = construct(arr);
-        BSTProp bstprop=isBinarySearchTree(root);
-        System.out.println("Validate Binary Search Tree >> "+bstprop.isbst);
+        display(root);
+        NodeProp prop=houseRobber(root);
+        System.out.println("Maximum Robbery >> "+Math.max(prop.include,prop.exclude));
     }
     
-     protected static class BSTProp {
-        long max;
-        long min;
-        boolean isbst;
-    }
-    
-    protected static BSTProp isBinarySearchTree(Node root){
-        if(root==null) { 
-            BSTProp bstprop=new BSTProp();
-            bstprop.min=Long.MAX_VALUE;
-            bstprop.max=Long.MIN_VALUE;
-            bstprop.isbst=true;
-            return bstprop;
-        }     
-        BSTProp leftbst=isBinarySearchTree(root.left);
-        BSTProp rightbst=isBinarySearchTree(root.right);
-        BSTProp bstprop=new BSTProp();
-        bstprop.max=Math.max(root.data,Math.max(leftbst.max,rightbst.max));
-        bstprop.min=Math.min(root.data,Math.min(rightbst.min,leftbst.min));
-        if(leftbst.isbst && rightbst.isbst && 
-            root.data > leftbst.max && root.data < rightbst.min ){
-            bstprop.isbst=true;
-        }else{
-            bstprop.isbst=false;
+    private static class NodeProp {
+        int include;
+        int exclude;
+        NodeProp(){}
+        NodeProp(int include,int exclude) {
+            this.include=include;
+            this.exclude=exclude;
         }
-        return bstprop;
     }
+    
+    public static NodeProp houseRobber(Node root) {
+        if(root==null) {
+            NodeProp nodeprop=new NodeProp(0,0);
+            return nodeprop;
+        } 
+        NodeProp left=houseRobber(root.left);
+        NodeProp right=houseRobber(root.right);
+        NodeProp nodeprop=new NodeProp();
+        nodeprop.include=root.data+left.exclude+right.exclude;
+        nodeprop.exclude=Math.max(left.exclude,left.include)+Math.max(right.include,right.exclude);   
+        return nodeprop;
+   }
 }
