@@ -1,8 +1,8 @@
-import java.io.*;
 import java.util.*;
-public class IsABinarySearchTree {
-    
-    public static class Node {
+
+public class LargestBinarySearchTreeSubTree {
+
+      public static class Node {
         int data;
         Node left;
         Node right;
@@ -72,27 +72,32 @@ public class IsABinarySearchTree {
 
     public static void main(String[] args) throws Exception {
         
-        Integer[] arr={5,1,null,null,7,6,null,null,8,null,null};
-        //Integer[] arr={2,10,null,null,3,null,null};
+        Integer[] arr={50,25,12,null,null,37,30,null,null,
+        40,null,null,10,62,60,null,null,70,null,null,87,null,null};
+        
         Node root = construct(arr);
+        display(root);
         BSTProp bstprop=isBinarySearchTree(root);
-        System.out.println("Validate Binary Search Tree >> "+bstprop.isbst);
+        System.out.println("Root of the Larget Binary Search Tree   >> "+bstprop.root.data);
+        System.out.println("Size of Larget Binary Search Tree >> "+bstprop.size);
     }
     
-     protected static class BSTProp {
+    protected static class BSTProp {
         long max;
         long min;
         boolean isbst;
+        Node root;
+        int size;
     }
     
-    protected static BSTProp isBinarySearchTree(Node root){
+    public static BSTProp isBinarySearchTree(Node root){
         if(root==null) { 
             BSTProp bstprop=new BSTProp();
             bstprop.min=Long.MAX_VALUE;
             bstprop.max=Long.MIN_VALUE;
             bstprop.isbst=true;
             return bstprop;
-        }     
+        }        
         BSTProp leftbst=isBinarySearchTree(root.left);
         BSTProp rightbst=isBinarySearchTree(root.right);
         BSTProp bstprop=new BSTProp();
@@ -101,7 +106,17 @@ public class IsABinarySearchTree {
         if(leftbst.isbst && rightbst.isbst && 
             root.data > leftbst.max && root.data < rightbst.min ){
             bstprop.isbst=true;
+            bstprop.root=root;
+            bstprop.size=leftbst.size+rightbst.size+1;
         }else{
+            if(leftbst.size>rightbst.size) {
+               bstprop.root=leftbst.root;
+               bstprop.size=leftbst.size; 
+            }
+            else{
+                bstprop.root=rightbst.root;
+                bstprop.size=rightbst.size; 
+            }
             bstprop.isbst=false;
         }
         return bstprop;

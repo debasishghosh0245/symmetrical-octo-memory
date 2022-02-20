@@ -1,8 +1,8 @@
-import java.io.*;
 import java.util.*;
-public class IsABinarySearchTree {
-    
-    public static class Node {
+
+public class SymmetricTree_101 {
+
+      public static class Node {
         int data;
         Node left;
         Node right;
@@ -71,39 +71,50 @@ public class IsABinarySearchTree {
     }
 
     public static void main(String[] args) throws Exception {
-        
-        Integer[] arr={5,1,null,null,7,6,null,null,8,null,null};
-        //Integer[] arr={2,10,null,null,3,null,null};
+        //Integer[] arr={1,2,3,null,null,4,null,null,2,4,null,null,3,null,null};
+        Integer[] arr={1,2,null,3,null,null,2,null,3,null,null};
         Node root = construct(arr);
-        BSTProp bstprop=isBinarySearchTree(root);
-        System.out.println("Validate Binary Search Tree >> "+bstprop.isbst);
+        display(root);
+        System.out.println(ismirror(root,root));
     }
     
-     protected static class BSTProp {
-        long max;
-        long min;
-        boolean isbst;
-    }
-    
-    protected static BSTProp isBinarySearchTree(Node root){
-        if(root==null) { 
-            BSTProp bstprop=new BSTProp();
-            bstprop.min=Long.MAX_VALUE;
-            bstprop.max=Long.MIN_VALUE;
-            bstprop.isbst=true;
-            return bstprop;
-        }     
-        BSTProp leftbst=isBinarySearchTree(root.left);
-        BSTProp rightbst=isBinarySearchTree(root.right);
-        BSTProp bstprop=new BSTProp();
-        bstprop.max=Math.max(root.data,Math.max(leftbst.max,rightbst.max));
-        bstprop.min=Math.min(root.data,Math.min(rightbst.min,leftbst.min));
-        if(leftbst.isbst && rightbst.isbst && 
-            root.data > leftbst.max && root.data < rightbst.min ){
-            bstprop.isbst=true;
-        }else{
-            bstprop.isbst=false;
+    public static Node mirror(Node root) {
+    if(root==null) return null;
+        Node left=null;
+        Node right=null;
+        if(root.left!=null) {
+            left=mirror(root.left); 
         }
-        return bstprop;
+        if(root.right!=null) {
+            right=mirror(root.right); 
+        }
+        root.left=right;
+        root.right=left;
+        return root;
     }
+    
+    public static boolean isSymmetric(Node root1,Node root2) {
+        
+        if(root1==null && root2==null) return true;
+        if(root1==null && root2!=null) return false;
+        if(root2==null && root1!=null) return false;
+        if(root1.data!=root2.data) {
+            return false;
+        }
+        boolean issymmetric=isSymmetric(root1.left,root2.right);
+        if(!issymmetric) return false;
+        issymmetric=isSymmetric(root1.right,root2.left);
+        if(!issymmetric) return false;
+        return true;
+    }
+    
+    //Same Code But in Cool Way
+    public static boolean ismirror(Node root1,Node root2) {
+        if(root1==null && root2==null) return true;
+        if(root1==null || root2==null) return false;
+        return (root1.data==root2.data) 
+             && ismirror(root1.left,root2.right)
+             && ismirror(root1.right,root2.left);
+    }
+    
 }

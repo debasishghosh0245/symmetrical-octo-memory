@@ -1,19 +1,20 @@
-import java.io.*;
 import java.util.*;
-public class IsABinarySearchTree {
+public class SerializeAndDeserializeBinaryTree{
     
-    public static class Node {
+    private static class Node {
         int data;
         Node left;
         Node right;
+        Node(int data){
+            this.data=data;
+        }
         Node(int data, Node left, Node right) {
             this.data = data;
             this.left = left;
             this.right = right;
         }
     }
-    
-    public static class Pair {
+    private static class Pair {
         Node node;
         int state;
         Pair(Node node, int state) {
@@ -21,8 +22,7 @@ public class IsABinarySearchTree {
             this.state = state;
        }
     }
-    
-    public static Node construct(Integer[] arr) {
+    private static Node construct(Integer[] arr) {
         Node root = new Node(arr[0], null, null);
         Pair rtp = new Pair(root, 1);
         Stack<Pair> st = new Stack<>();
@@ -57,53 +57,56 @@ public class IsABinarySearchTree {
         return root;
     }
 
-    public static void display(Node node) {
+    private static void display(Node node) {
         if (node == null) {
             return;
         }
         String str = "";
-        str += node.left == null ? "null" : node.left.data + "";
+        str += node.left == null ? "." : node.left.data + "";
         str += " <- " + node.data + " -> ";
-        str += node.right == null ? "null" : node.right.data + "";
+        str += node.right == null ? "." : node.right.data + "";
         System.out.println(str);
         display(node.left);
         display(node.right);
     }
 
     public static void main(String[] args) throws Exception {
-        
-        Integer[] arr={5,1,null,null,7,6,null,null,8,null,null};
-        //Integer[] arr={2,10,null,null,3,null,null};
+        Integer[]arr = {50,25,12,null,null,37,null,null,
+        75,67,null,null,87,null,null};
         Node root = construct(arr);
-        BSTProp bstprop=isBinarySearchTree(root);
-        System.out.println("Validate Binary Search Tree >> "+bstprop.isbst);
+        //display(root);
+        String str=serialize(root);
+        System.out.println(str);
+        String[] strarr=str.split(",");
+        System.out.println(Arrays.toString(strarr));
+        Node root2=deserialized(strarr);
+        System.out.println("Deserialized");
+        display(root2);
     }
     
-     protected static class BSTProp {
-        long max;
-        long min;
-        boolean isbst;
-    }
-    
-    protected static BSTProp isBinarySearchTree(Node root){
-        if(root==null) { 
-            BSTProp bstprop=new BSTProp();
-            bstprop.min=Long.MAX_VALUE;
-            bstprop.max=Long.MIN_VALUE;
-            bstprop.isbst=true;
-            return bstprop;
-        }     
-        BSTProp leftbst=isBinarySearchTree(root.left);
-        BSTProp rightbst=isBinarySearchTree(root.right);
-        BSTProp bstprop=new BSTProp();
-        bstprop.max=Math.max(root.data,Math.max(leftbst.max,rightbst.max));
-        bstprop.min=Math.min(root.data,Math.min(rightbst.min,leftbst.min));
-        if(leftbst.isbst && rightbst.isbst && 
-            root.data > leftbst.max && root.data < rightbst.min ){
-            bstprop.isbst=true;
-        }else{
-            bstprop.isbst=false;
+    private static String serialize(Node root) {
+        StringBuilder sb=new StringBuilder();
+        if(root==null) {
+            sb.append("null");
+            return sb.toString();
         }
-        return bstprop;
+        sb.append(root.data);
+        String serializedLeftNode=serialize(root.left);
+        String serializedRightNode=serialize(root.right);
+        sb.append(","+serializedLeftNode);
+        sb.append(","+serializedRightNode);
+        return sb.toString();
+    }
+    private static int idx=0;
+    private static Node deserialized(String[] str) {
+        if(idx>str.length) return null;
+        if(str[idx].equals("null")) {
+            idx++;
+            return null;
+        }
+        Node node=new Node(Integer.parseInt(str[idx++]));
+        node.left=deserialized(str);
+        node.right=deserialized(str);
+        return node; 
     }
 }
