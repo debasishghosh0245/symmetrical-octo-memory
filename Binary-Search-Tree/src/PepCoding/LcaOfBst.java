@@ -1,5 +1,5 @@
 import java.util.*;
-public class LowestCommonAncestorBinarySearchTree_235{
+public class LcaOfBst{
     
     static int idx=0;
     public static class Node {
@@ -58,5 +58,4 @@ public class LowestCommonAncestorBinarySearchTree_235{
              return root;
         }
     }
-
 }

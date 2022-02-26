@@ -1,5 +1,7 @@
 import java.util.*;
-public class VerticalOrderOfBinaryTree{
+public class MaximumWidthOfBinaryTree_662{
+   
+    static int maxWidth=Integer.MIN_VALUE;
     
     public static class Node {
         int data;
@@ -23,7 +25,7 @@ public class VerticalOrderOfBinaryTree{
     
     public static Node construct(Integer[] arr) {
         Node root = new Node(arr[0], null, null);
-        Pair rtp = new Pair(root,1);
+        Pair rtp = new Pair(root, 1);
         Stack<Pair> st = new Stack<>();
         st.push(rtp);
         int idx = 0;
@@ -70,49 +72,29 @@ public class VerticalOrderOfBinaryTree{
     }
 
     public static void main(String[] args) throws Exception {
-        Integer[]arr = {50,25,12,null,null,37,30,null,null,null,
-        75,62,null,70,null,null,87,null,null};
+        Integer[] arr = {50,25,12,null,null,37,30,null,null,40,null,null,
+        75,67,60,null,null,70,null,null,null};
         Node root = construct(arr);
-        System.out.println(vertricalOrderTraversal(root));
+        display(root);
+        vertricalOrderTraversal(root);
+        System.out.println("Min Width >> "+maxWidth);
     }
-    
-    public static class PairCol{
-        Node node;
-        int column;
-        PairCol(Node node,int column) {
-            this.node=node;
-            this.column=column;
-        }
-    }
-    
-    public static List<List<Integer>> vertricalOrderTraversal(Node root) {
-        Queue<PairCol> queue=new ArrayDeque<>();
-        queue.add(new PairCol(root,0)); 
-        HashMap<Integer,ArrayList<Integer>> columnTable=new HashMap<>();
-        List<List<Integer>> list=new ArrayList<List<Integer>>();
-        int minColumn=0;
-        int maxColumn=0;
+   
+    public static void vertricalOrderTraversal(Node root){
+        Queue<Node> queue=new ArrayDeque<>();
+        queue.add(root);
         while(!queue.isEmpty()) {
-            int size=queue.size();
-            for(int i=0;i<size;i++) {
-                PairCol currentNode=queue.remove();
-                columnTable.putIfAbsent(currentNode.column,new ArrayList<>());
-                if(null!=currentNode.node){
-                    columnTable.get(currentNode.column).add(currentNode.node.data); 
-                }
-                minColumn=Math.min(currentNode.column,minColumn);
-                maxColumn=Math.max(currentNode.column,maxColumn);
-                if(null!=currentNode.node.left){
-                    queue.add(new PairCol(currentNode.node.left,currentNode.column-1)); 
-                }
-                if(null!=currentNode.node.right) {
-                    queue.add(new PairCol(currentNode.node.right,currentNode.column+1));   
-                } 
-            }
+             int size=queue.size();
+             maxWidth=Math.max(size,maxWidth);
+             for(int i=0;i<size;i++) {
+                  Node currentNode=queue.remove();
+                  if(currentNode.left!=null) {
+                      queue.add(currentNode.left);
+                  }
+                  if(currentNode.right!=null) {
+                      queue.add(currentNode.right);
+                  }
+             }
         }
-        for(int i=minColumn;i<=maxColumn;i++) {
-           list.add(columnTable.get(i));
-        }
-        return list;
     }
 }

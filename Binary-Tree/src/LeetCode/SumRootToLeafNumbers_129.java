@@ -1,8 +1,6 @@
-import java.io.*;
 import java.util.*;
-
-public class MaximumOfBinaryTree {
-  
+public class SumRootToLeafNumbers_129{
+    static int sum=0;
     public static class Node {
         int data;
         Node left;
@@ -41,13 +39,13 @@ public class MaximumOfBinaryTree {
                 top.state++;
             }  else if (top.state == 2) {
                 idx++;
-            if (arr[idx] != null) {
-                top.node.right = new Node(arr[idx], null, null);
-                Pair rp = new Pair(top.node.right, 1);
-                st.push(rp);
-            } else {
-                top.node.right = null;
-            }
+                if (arr[idx] != null) {
+                    top.node.right = new Node(arr[idx], null, null);
+                    Pair rp = new Pair(top.node.right, 1);
+                    st.push(rp);
+                } else {
+                    top.node.right = null;
+                }
                 top.state++;
             } else {
                 st.pop();
@@ -55,6 +53,7 @@ public class MaximumOfBinaryTree {
         }
         return root;
     }
+
     public static void display(Node node) {
         if (node == null) {
             return;
@@ -67,18 +66,27 @@ public class MaximumOfBinaryTree {
         display(node.left);
         display(node.right);
     }
+
     public static void main(String[] args) throws Exception {
-        Integer[]arr = {50,25,12,null,null,37,30,null,null,null,75,62,null,70,null,null,87,null,null};
+        //Integer[] arr = {1,2,null,null,3,null,null};
+        Integer[] arr={4,9,5,null,null,1,null,null,0,null,null};
         Node root = construct(arr);
-        display(root);
-        System.out.println("Maximum Of Binary Tree "+maximum(root));
+        String path=new String(root.data+"");
+        rootToNodePath(root,path);
+        System.out.println(sum);
+        
     }
-    public static int maximum(Node root) {
-        if(root==null) return Integer.MIN_VALUE; 
-        int leftmax=maximum(root.left);
-        int rightmax=maximum(root.right);
-        int max=Math.max(leftmax,rightmax);
-        max=Math.max(max,root.data);
-        return max;
-    }
+    
+    public static void rootToNodePath(Node root,String path) {
+       if(root==null) return;
+       if(root.left==null && root.right==null) {
+           sum+=Integer.parseInt(path);
+       }
+       if(root.left!=null) {
+           rootToNodePath(root.left,path+root.left.data);
+       }
+       if(root.right!=null) {
+           rootToNodePath(root.right,path+root.right.data);
+       }
+   }
 }

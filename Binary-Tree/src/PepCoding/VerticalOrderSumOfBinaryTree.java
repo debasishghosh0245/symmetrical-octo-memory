@@ -1,5 +1,6 @@
 import java.util.*;
-public class VerticalOrderOfBinaryTree{
+public class VerticalOrderSumOfBinaryTree{
+    
     
     public static class Node {
         int data;
@@ -23,7 +24,7 @@ public class VerticalOrderOfBinaryTree{
     
     public static Node construct(Integer[] arr) {
         Node root = new Node(arr[0], null, null);
-        Pair rtp = new Pair(root,1);
+        Pair rtp = new Pair(root, 1);
         Stack<Pair> st = new Stack<>();
         st.push(rtp);
         int idx = 0;
@@ -70,10 +71,11 @@ public class VerticalOrderOfBinaryTree{
     }
 
     public static void main(String[] args) throws Exception {
-        Integer[]arr = {50,25,12,null,null,37,30,null,null,null,
-        75,62,null,70,null,null,87,null,null};
+        Integer[]arr = {50,25,12,null,null,37,30,null,null,40,null,null,
+            75,67,60,null,null,70,null,null,87,null,null};
         Node root = construct(arr);
-        System.out.println(vertricalOrderTraversal(root));
+        //display(root);
+        System.out.println(vertricalOrderSum(root,new ArrayList<Integer>()));
     }
     
     public static class PairCol{
@@ -85,34 +87,39 @@ public class VerticalOrderOfBinaryTree{
         }
     }
     
-    public static List<List<Integer>> vertricalOrderTraversal(Node root) {
+    public static ArrayList<Integer> vertricalOrderSum(Node root,
+        ArrayList<Integer> list){
         Queue<PairCol> queue=new ArrayDeque<>();
-        queue.add(new PairCol(root,0)); 
-        HashMap<Integer,ArrayList<Integer>> columnTable=new HashMap<>();
-        List<List<Integer>> list=new ArrayList<List<Integer>>();
+        PairCol pairCol=new PairCol(root,0);
+        HashMap<Integer,Integer> hashMap=new HashMap<>();
+        queue.add(pairCol);
         int minColumn=0;
         int maxColumn=0;
         while(!queue.isEmpty()) {
-            int size=queue.size();
-            for(int i=0;i<size;i++) {
-                PairCol currentNode=queue.remove();
-                columnTable.putIfAbsent(currentNode.column,new ArrayList<>());
-                if(null!=currentNode.node){
-                    columnTable.get(currentNode.column).add(currentNode.node.data); 
-                }
-                minColumn=Math.min(currentNode.column,minColumn);
-                maxColumn=Math.max(currentNode.column,maxColumn);
-                if(null!=currentNode.node.left){
-                    queue.add(new PairCol(currentNode.node.left,currentNode.column-1)); 
-                }
-                if(null!=currentNode.node.right) {
-                    queue.add(new PairCol(currentNode.node.right,currentNode.column+1));   
-                } 
-            }
+             int size=queue.size();
+             for(int i=0;i<size;i++) {
+                  PairCol currPairCol=queue.remove();
+                  int currentCol=currPairCol.column;
+                  minColumn=Math.min(minColumn,currentCol);
+                  maxColumn=Math.max(maxColumn,currentCol);
+                  Node currentNode=currPairCol.node;
+                  int sum=hashMap.getOrDefault(currentCol,0)
+                  +currPairCol.node.data;
+                  hashMap.put(currentCol,sum);
+                  if(currentNode.left!=null) {
+                        PairCol pairColleft=new PairCol(currentNode.left,currentCol-1);
+                        queue.add(pairColleft);
+                  }
+                  if(currentNode.right!=null) {
+                        PairCol pairColRight=new PairCol(currentNode.right,currentCol+1);
+                        queue.add(pairColRight);
+                  }
+             }
         }
         for(int i=minColumn;i<=maxColumn;i++) {
-           list.add(columnTable.get(i));
+            list.add(hashMap.get(i));
         }
         return list;
     }
+    
 }
