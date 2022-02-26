@@ -1,8 +1,8 @@
-import java.io.*;
 import java.util.*;
-
-public class MaximumOfBinaryTree {
-  
+public class CountGoodNodesBinaryTree_1448 {
+   
+    private static int numGoodNodes = 0;
+   
     public static class Node {
         int data;
         Node left;
@@ -12,7 +12,12 @@ public class MaximumOfBinaryTree {
             this.left = left;
             this.right = right;
         }
+        
+        Node(int data) {
+            this.data=data;
+        }
     }
+
     public static class Pair {
         Node node;
         int state;
@@ -21,6 +26,7 @@ public class MaximumOfBinaryTree {
             this.state = state;
         }
     }
+
     public static Node construct(Integer[] arr) {
         Node root = new Node(arr[0], null, null);
         Pair rtp = new Pair(root, 1);
@@ -55,9 +61,10 @@ public class MaximumOfBinaryTree {
         }
         return root;
     }
+
     public static void display(Node node) {
         if (node == null) {
-            return;
+          return;
         }
         String str = "";
         str += node.left == null ? "." : node.left.data + "";
@@ -67,18 +74,22 @@ public class MaximumOfBinaryTree {
         display(node.left);
         display(node.right);
     }
+
     public static void main(String[] args) throws Exception {
-        Integer[]arr = {50,25,12,null,null,37,30,null,null,null,75,62,null,70,null,null,87,null,null};
-        Node root = construct(arr);
-        display(root);
-        System.out.println("Maximum Of Binary Tree "+maximum(root));
+        Integer[] arr={3,1,3,null,null,null,4,1,null,null,5,null,null};
+        //Integer[] arr={3,3,4,null,null,2,null,null,null};
+        Node root2=construct(arr);
+        display(root2);
+        System.out.println(countNodesHelper(root2,Integer.MIN_VALUE));
     }
-    public static int maximum(Node root) {
-        if(root==null) return Integer.MIN_VALUE; 
-        int leftmax=maximum(root.left);
-        int rightmax=maximum(root.right);
-        int max=Math.max(leftmax,rightmax);
-        max=Math.max(max,root.data);
-        return max;
+    
+    public static int countNodesHelper(Node root,int maxsofar) {
+        if(root==null) return 0;
+        if(root.data<=maxsofar){
+           numGoodNodes++;
+        }
+        int leftCount=countNodesHelper(root.left,Math.max(maxsofar,root.data));
+        int rightCount=countNodesHelper(root.right,Math.max(maxsofar,root.data));
+        return numGoodNodes;
     }
 }

@@ -1,5 +1,5 @@
 import java.util.*;
-public class SerializedAndDeserializedGenericTree {
+public class SerializeDeserializeNaryTree_428 {
 
 	private static class Node{
 		int data;
@@ -9,28 +9,16 @@ public class SerializedAndDeserializedGenericTree {
 		}
 	}
 	
-	public static void display(Node node){
-		String str=node.data+"-->>";
-		for(Node child:node.children){
-			str=str+" "+child.data;
+	/** Size of Generic Tree **/ 
+	public static int size(Node root){
+		if(root==null) return 0;
+		int sum=0;
+		for(Node child: root.children){
+			int cs=size(child);
+			sum=sum+cs;
 		}
-		System.out.println(str);
-		for (Node child : node.children) {
-			display(child);
-		}
-	}
-	
-	public static void main(String[] args){
-		int[] arr={10,20,-1,30,50,-1,60,-1,-1,40,-1};
-		Node root=null;
-		root=construct(root,arr);
-		/* display(root); */
-        StringBuilder data=new StringBuilder();
-        serialized(root,data);
-        System.out.println("Print Serialized Generic Tree >> "+data);
-        String[] arr2=data.toString().split(" ");
-        Node root2=deserialized(arr2);
-        display(root2);
+		sum=sum+1;
+		return sum;
 	}
 	
 	public static Node construct(Node root,int[] arr) {
@@ -51,7 +39,20 @@ public class SerializedAndDeserializedGenericTree {
 		return root;
 	}
 
-    private static String serialized(Node root,StringBuilder sb) {
+	public static void main(String[] args){
+		int[] arr={10,20,-1,30,50,-1,60,-1,-1,40,-1};
+		Node root=null;
+		root=construct(root,arr);
+		/* display(root); */
+        StringBuilder data=new StringBuilder();
+        serialized(root,data);
+        System.out.println("Print Serialized Generic Tree >> "+data);
+        String[] arr2=data.toString().split(" ");
+        Node root2=deserialized(arr2);
+        display(root2);
+	}
+
+       private static String serialized(Node root,StringBuilder sb) {
         sb.append(root.data+" ");
         for(Node child: root.children) {
             serialized(child,sb);
@@ -76,4 +77,5 @@ public class SerializedAndDeserializedGenericTree {
         }
         return root;
     }
+
 }

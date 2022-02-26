@@ -1,8 +1,7 @@
 import java.io.*;
 import java.util.*;
-
-public class MaximumOfBinaryTree {
-  
+public class TargetSumPairInBst {
+    
     public static class Node {
         int data;
         Node left;
@@ -14,12 +13,12 @@ public class MaximumOfBinaryTree {
         }
     }
     public static class Pair {
-        Node node;
-        int state;
-        Pair(Node node, int state) {
+       Node node;
+       int state;
+       Pair(Node node, int state) {
             this.node = node;
             this.state = state;
-        }
+       }
     }
     public static Node construct(Integer[] arr) {
         Node root = new Node(arr[0], null, null);
@@ -30,17 +29,17 @@ public class MaximumOfBinaryTree {
         while (st.size() > 0) {
             Pair top = st.peek();
             if (top.state == 1) {
-                idx++;
-                if (arr[idx] != null) {
-                    top.node.left = new Node(arr[idx], null, null);
-                    Pair lp = new Pair(top.node.left, 1);
-                    st.push(lp);
-                } else {
-                    top.node.left = null;
-                }
-                top.state++;
-            }  else if (top.state == 2) {
-                idx++;
+            idx++;
+            if (arr[idx] != null) {
+                top.node.left = new Node(arr[idx], null, null);
+                Pair lp = new Pair(top.node.left, 1);
+            st.push(lp);
+            } else {
+                top.node.left = null;
+            }
+            top.state++;
+        } else if (top.state == 2) {
+            idx++;
             if (arr[idx] != null) {
                 top.node.right = new Node(arr[idx], null, null);
                 Pair rp = new Pair(top.node.right, 1);
@@ -48,13 +47,14 @@ public class MaximumOfBinaryTree {
             } else {
                 top.node.right = null;
             }
-                top.state++;
-            } else {
-                st.pop();
+            top.state++;
+        } else {
+            st.pop();
             }
         }
         return root;
     }
+
     public static void display(Node node) {
         if (node == null) {
             return;
@@ -67,18 +67,36 @@ public class MaximumOfBinaryTree {
         display(node.left);
         display(node.right);
     }
+
     public static void main(String[] args) throws Exception {
-        Integer[]arr = {50,25,12,null,null,37,30,null,null,null,75,62,null,70,null,null,87,null,null};
+        Integer[] arr={50,25,12,null,null,
+        37,30,null,null,40,null,null,75,67,60,null,null,70,null,null,
+        87,null,null};
         Node root = construct(arr);
-        display(root);
-        System.out.println("Maximum Of Binary Tree "+maximum(root));
+        //display(root);
+        printTargetPair(root,root,100);
     }
-    public static int maximum(Node root) {
-        if(root==null) return Integer.MIN_VALUE; 
-        int leftmax=maximum(root.left);
-        int rightmax=maximum(root.right);
-        int max=Math.max(leftmax,rightmax);
-        max=Math.max(max,root.data);
-        return max;
+    
+    public static void printTargetPair(Node root,Node node,int target) {
+        if(node==null) return;
+        printTargetPair(root,node.left,target);
+        int compliment=target-node.data;
+        if(compliment > node.data) {
+            if(find(root,compliment)){
+                System.out.println(node.data+" , "+compliment);
+            }
+        }
+        printTargetPair(root,node.right,target);
+    }
+    
+    public static boolean find(Node root,int target) {
+        if(root==null) return false;
+        if(target>root.data) {
+           return find(root.right,target);
+        }else if(target<root.data){
+           return find(root.left,target);
+        }else{
+           return true;
+        }
     }
 }

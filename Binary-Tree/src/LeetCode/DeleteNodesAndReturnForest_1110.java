@@ -1,8 +1,6 @@
-import java.io.*;
 import java.util.*;
-
-public class MaximumOfBinaryTree {
-  
+public class DeleteNodesAndReturnForest_1110 {
+    
     public static class Node {
         int data;
         Node left;
@@ -12,7 +10,12 @@ public class MaximumOfBinaryTree {
             this.left = left;
             this.right = right;
         }
+        
+        Node(int data) {
+            this.data=data;
+        }
     }
+
     public static class Pair {
         Node node;
         int state;
@@ -21,6 +24,7 @@ public class MaximumOfBinaryTree {
             this.state = state;
         }
     }
+
     public static Node construct(Integer[] arr) {
         Node root = new Node(arr[0], null, null);
         Pair rtp = new Pair(root, 1);
@@ -55,9 +59,10 @@ public class MaximumOfBinaryTree {
         }
         return root;
     }
+
     public static void display(Node node) {
         if (node == null) {
-            return;
+          return;
         }
         String str = "";
         str += node.left == null ? "." : node.left.data + "";
@@ -67,18 +72,38 @@ public class MaximumOfBinaryTree {
         display(node.left);
         display(node.right);
     }
+
     public static void main(String[] args) throws Exception {
-        Integer[]arr = {50,25,12,null,null,37,30,null,null,null,75,62,null,70,null,null,87,null,null};
+        Integer[] arr={1,2,4,null,null,5,null,null,3,
+        6,null,null,7,null,null};
+         //display(root2);
+        HashSet<Integer> hashSet=new HashSet<>();
+        int[] to_delete={3,5};
+        for(int i: to_delete){
+            hashSet.add(i);
+        }
         Node root = construct(arr);
-        display(root);
-        System.out.println("Maximum Of Binary Tree "+maximum(root));
+        List<Node> list=new ArrayList<>();
+        Node root2=delNodes(root,hashSet,list);
+        if(!hashSet.contains(root2.data)){
+             list.add(root2); 
+        }
+        System.out.println(list.toString());
     }
-    public static int maximum(Node root) {
-        if(root==null) return Integer.MIN_VALUE; 
-        int leftmax=maximum(root.left);
-        int rightmax=maximum(root.right);
-        int max=Math.max(leftmax,rightmax);
-        max=Math.max(max,root.data);
-        return max;
+    
+    public static Node delNodes(Node root,HashSet<Integer> to_delete,List<Node> list) {
+        if(root==null) return null;
+        root.left=delNodes(root.left,to_delete,list);
+        root.right=delNodes(root.right,to_delete,list);
+        if(to_delete.contains(root.data)) {
+            if(null!=root.left){
+               list.add(root.left);  
+            }
+            if(null!=root.right){
+               list.add(root.right);  
+            }
+            return null;
+        }
+        return root;
     }
 }
