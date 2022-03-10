@@ -1,4 +1,4 @@
-public class ReverseLinkedListPointerRecursive {
+public class FoldALinkedList {
     
     public static class LinkedList {
 		
@@ -44,7 +44,7 @@ public class ReverseLinkedListPointerRecursive {
             return head;
         }
     }
-   
+	
         private static class Node {
            public Node next;
            public int data;
@@ -78,20 +78,22 @@ public class ReverseLinkedListPointerRecursive {
         } 
 
 		public static Node left=null;
-		
-		public static void reverse(Node head,int floor){
+		public static void fold(Node head,int floor){
 			left=head;
-			reverseHelper(left,floor);
+			fold(left,floor);
 		}
 		
-		public static void reverseHelper(Node right,int floor){
+		public static void floodHelper(Node right,int floor){
 			if(right==null) return;
-			reverseHelper(right.next,floor+1);
-			if(floor>2){
-				int temp=right.data;
-				right.data=left.data;
-				left.data=temp;
+			floodHelper(right.next,floor+1);
+			if(floor > size/2){
+				Node temp=left.next;
+				left.next=right;
+				right.next=temp;
+				left=temp;
+			}else if(floor==size/2){
+				tail=right;
+				tail.next=null;
 			}
-			left=left.next;
 		}
 }

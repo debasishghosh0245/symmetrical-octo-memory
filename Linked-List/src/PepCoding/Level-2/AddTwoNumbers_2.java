@@ -1,4 +1,4 @@
-public class ReverseLinkedListPointerRecursive {
+public class  AddTwoNumbers_2 {
     
     public static class LinkedList {
 		
@@ -44,54 +44,78 @@ public class ReverseLinkedListPointerRecursive {
             return head;
         }
     }
-   
+	
         private static class Node {
            public Node next;
            public int data;
             
+		   Node(){}
+		   
            Node(int data){
              this.data=data;
            }
+		   
            Node(Node next,int data){
              this.data=data;
              this.next=next;
            }  
 		}
+		
         public static void main(String[] args) {
+			//l1 = [2,4,3], l2 = [5,6,4]
+			//l1 = [9,9,9,9,9,9,9], l2 = [9,9,9,9]
             LinkedList list1=new LinkedList();
             list1.addLast(2);
-            list1.addLast(1);
-            list1.addLast(3);
-			list1.addLast(5);
-			reverse(list1.head,2);
-			System.out.println("Display Reverse Version");
-			display(list1.head);
+            list1.addLast(4);
+			list1.addLast(3);
+			/* list1.addLast(9);
+            list1.addLast(9);
+			list1.addLast(9);
+			list1.addLast(9); */
+			
+			LinkedList list2=new LinkedList();
+            list2.addLast(5);
+            list2.addLast(6);
+			list2.addLast(4);
+			/* list2.addLast(9); */
+
+			Node result=add(list1.head,list2.head);
+			display(result);
         }  	
 		
 		public static void display(Node head){
-                Node curr=head;
-                while(curr!=null){
+            Node curr=head;
+            while(curr!=null){
                    System.out.print(curr.data+" ");
                    curr=curr.next;
             }
             System.out.println(" ");
         } 
-
-		public static Node left=null;
 		
-		public static void reverse(Node head,int floor){
-			left=head;
-			reverseHelper(left,floor);
-		}
-		
-		public static void reverseHelper(Node right,int floor){
-			if(right==null) return;
-			reverseHelper(right.next,floor+1);
-			if(floor>2){
-				int temp=right.data;
-				right.data=left.data;
-				left.data=temp;
+		public static Node add(Node head1,Node head2){
+			Node temp1=head1;
+			Node temp2=head2;
+			Node node=new Node();
+			Node temp=node;
+			int carry=0;
+			while(temp1!=null || temp2!=null){
+				int x=temp1!=null ? temp1.data : 0;
+				int y=temp2!=null ? temp2.data : 0;
+				int sum=x+y+carry;
+                carry=sum/10;	
+			    if(temp==null){
+					temp=new Node(sum%10);
+				}else{
+					temp.next=new Node(sum%10);
+					temp=temp.next;
+				}
+				if(temp1!=null) temp1=temp1.next;
+				if(temp2!=null) temp2=temp2.next;
 			}
-			left=left.next;
+			
+			if(carry>0){
+				temp.next=new Node(carry);
+			}
+			return node.next;
 		}
 }

@@ -1,4 +1,4 @@
-public class RemoveDuplicatesInASortedLinkedList{
+public class MidOfLinkedList{
      
     public static class LinkedList {
         private Node head;
@@ -15,8 +15,8 @@ public class RemoveDuplicatesInASortedLinkedList{
                    current=current.next;
            }
            current.next=tail;
-        }
-        size++;
+          }
+         size++;
     }
     
     public int getLast(){
@@ -31,7 +31,6 @@ public class RemoveDuplicatesInASortedLinkedList{
             return -1;
         } 
     }
-    
     public int removeLast() {
         Node temp=head;
         while(temp.next.next!=null) {
@@ -53,21 +52,20 @@ public class RemoveDuplicatesInASortedLinkedList{
         }
         System.out.println(" ");  
     }
-
-	//Time Complexity: O(n) 
-	//Space Complexity : O(1)
-    public void removeDuplicate(){
-        Node curr=head;
-		while(null!=curr && curr.next!=null){
-			if(curr.data==curr.next.data){
-				curr.next=curr.next.next;
-			}else{
-				curr=curr.next;
-			}
-		}
+    
+    
+    public int mid(){
+        Node fast=head;
+        Node slow=head;
+        while(null!=slow && null!=fast 
+        && null!=fast.next && null!=fast.next.next){
+            slow=slow.next;
+            fast=fast.next.next;
+        }
+        return slow.data;
     }
-	
-	}
+}
+
     private static class Node {
         public Node next;
         public int data;
@@ -83,22 +81,16 @@ public class RemoveDuplicatesInASortedLinkedList{
     public static void main(String[] args) {
        
         LinkedList list=new LinkedList();
-        //2 2 2 3 3 5 5 5 5 5
-        list.addLast(1);
-        list.addLast(1);
-        list.addLast(2);
-        list.addLast(3);
-        list.addLast(3);
-        list.addLast(5);
-        list.addLast(5);
-        list.addLast(5);
-        list.addLast(5);
-        list.addLast(5); 
-        list.display();
-        
-        list.removeDuplicate();
+        list.addLast(10);
+        list.addLast(20);
+        list.addLast(30);
+        list.addLast(40);
         
         list.display();
         
+        System.out.println("Print middle data>> "+list.mid());
+        
+   
     }   
+    
 }

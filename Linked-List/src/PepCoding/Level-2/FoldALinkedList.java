@@ -1,4 +1,4 @@
-public class ReverseLinkedListPointerRecursive {
+public class FoldALinkedList {
     
     public static class LinkedList {
 		
@@ -44,7 +44,7 @@ public class ReverseLinkedListPointerRecursive {
             return head;
         }
     }
-   
+	
         private static class Node {
            public Node next;
            public int data;
@@ -57,15 +57,16 @@ public class ReverseLinkedListPointerRecursive {
              this.next=next;
            }  
 		}
+		
         public static void main(String[] args) {
             LinkedList list1=new LinkedList();
             list1.addLast(2);
             list1.addLast(1);
+			list1.addLast(0);
             list1.addLast(3);
 			list1.addLast(5);
-			reverse(list1.head,2);
-			System.out.println("Display Reverse Version");
-			display(list1.head);
+			Node folded=fold(list1.head);
+			display(folded);
         }  	
 		
 		public static void display(Node head){
@@ -76,22 +77,46 @@ public class ReverseLinkedListPointerRecursive {
             }
             System.out.println(" ");
         } 
-
-		public static Node left=null;
 		
-		public static void reverse(Node head,int floor){
-			left=head;
-			reverseHelper(left,floor);
+		public static Node mid(Node head){
+			Node slow=head;
+			Node fast=head;
+			while(slow!=null && fast!=null 
+				&& fast.next!=null){
+			    slow=slow.next;
+				fast=fast.next.next;
+			}
+			return slow;
 		}
 		
-		public static void reverseHelper(Node right,int floor){
-			if(right==null) return;
-			reverseHelper(right.next,floor+1);
-			if(floor>2){
-				int temp=right.data;
-				right.data=left.data;
-				left.data=temp;
+		public static Node fold(Node head){
+			Node head1=head;
+			Node mid=mid(head);
+			Node head2=reverse(mid.next);
+			mid.next=null;			
+			Node temp1=head1;
+			Node temp2=head2;
+			while(temp1!=null 
+				&& temp2!=null){	
+				Node next1=temp1.next;
+				Node next2=temp2.next;
+				temp1.next=temp2;
+				temp2.next=next1;
+				temp1=next1;
+				temp2=next2;
 			}
-			left=left.next;
+			return head1;
+		}
+
+		public static Node reverse(Node head){
+			Node prev=null;
+			Node curr=head;
+			while(curr!=null){
+				Node temp=curr.next;
+				curr.next=prev;
+				prev=curr;
+				curr=temp;
+			}
+			return prev;
 		}
 }

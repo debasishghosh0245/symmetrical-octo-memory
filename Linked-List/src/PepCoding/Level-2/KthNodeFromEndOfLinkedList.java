@@ -1,5 +1,8 @@
-public class RemoveDuplicatesInASortedLinkedList{
+public class KthNodeFromEndOfLinkedList{
      
+    public static int idx=0;
+    public static int deleted;
+    
     public static class LinkedList {
         private Node head;
         private Node tail;
@@ -54,20 +57,49 @@ public class RemoveDuplicatesInASortedLinkedList{
         System.out.println(" ");  
     }
 
-	//Time Complexity: O(n) 
-	//Space Complexity : O(1)
-    public void removeDuplicate(){
-        Node curr=head;
-		while(null!=curr && curr.next!=null){
-			if(curr.data==curr.next.data){
-				curr.next=curr.next.next;
-			}else{
-				curr=curr.next;
-			}
-		}
+    //approach 1
+    public int removeKthNode(int k){
+        Node temp=head;
+        int del;
+        for(int i=1;i<size-k;i++){
+            temp=temp.next;
+        }
+        del=temp.next.data;
+        temp.next=temp.next.next;
+        return del;
     }
-	
-	}
+    
+    //approach 2 :: recurive
+    public Node removeKthNodeRe(int k,Node head){
+        if(head==null || head.next==null) return head;
+        removeKthNodeRe(k,head.next);
+        idx++;
+        if(k==idx){
+            deleted=head.next.data;
+            head.next=head.next.next;
+        }
+        return head;
+    }
+    
+    //approach 3
+    public Node removeKthNodeB(int k) {
+        Node fast=head;
+        Node slow=head;
+        while(k!=0){
+            k--;
+            fast=fast.next;
+        }
+        while(null!=fast && 
+            fast.next!=null) {
+            slow=slow.next;
+            fast=fast.next;
+        }
+        slow.next=slow.next.next;
+        return head;
+    }
+
+    }
+
     private static class Node {
         public Node next;
         public int data;
@@ -83,22 +115,14 @@ public class RemoveDuplicatesInASortedLinkedList{
     public static void main(String[] args) {
        
         LinkedList list=new LinkedList();
-        //2 2 2 3 3 5 5 5 5 5
-        list.addLast(1);
-        list.addLast(1);
-        list.addLast(2);
-        list.addLast(3);
-        list.addLast(3);
-        list.addLast(5);
-        list.addLast(5);
-        list.addLast(5);
-        list.addLast(5);
-        list.addLast(5); 
+        list.addLast(10);
+        list.addLast(20);
+        list.addLast(30);
+        list.addLast(40);
         list.display();
-        
-        list.removeDuplicate();
-        
+        System.out.println(list.removeKthNodeB(3));
         list.display();
+        System.out.println("deleted << "+deleted);
         
     }   
 }

@@ -1,4 +1,4 @@
-public class RemoveDuplicatesInASortedLinkedList{
+public class RemoveAllDuplicatesFromSortedLinkedlist{
      
     public static class LinkedList {
         private Node head;
@@ -53,21 +53,34 @@ public class RemoveDuplicatesInASortedLinkedList{
         }
         System.out.println(" ");  
     }
-
-	//Time Complexity: O(n) 
-	//Space Complexity : O(1)
-    public void removeDuplicate(){
-        Node curr=head;
-		while(null!=curr && curr.next!=null){
-			if(curr.data==curr.next.data){
-				curr.next=curr.next.next;
-			}else{
-				curr=curr.next;
+	//Spce Complexicy :O(1) because we don't allocate any additional data structure.
+	//Time complexity :O(N) since it's one pass along the input list.
+    public void removeDuplicate() {
+		Node sentinel=new Node(-1);
+		Node prev=sentinel;
+		Node current=head;
+        while(current!=null) {
+			//if it is begining of duplicate sublist 
+			//remove all duplicates 
+			if(null!=current.next && current.data==current.next.data){
+				//move to the end of the duplicate sublist
+				while(null!=current.next && 
+					current.data==current.next.data){
+					current=current.next;
+				}
+				//skip all duplicates 
+				prev.next=current.next;
+			}else {
+				//otherwise move predecessor
+				prev=prev.next;
 			}
-		}
+			//move forward
+			current=current.next;
+        }
+		head=sentinel.next;
     }
-	
-	}
+}
+
     private static class Node {
         public Node next;
         public int data;
@@ -83,21 +96,15 @@ public class RemoveDuplicatesInASortedLinkedList{
     public static void main(String[] args) {
        
         LinkedList list=new LinkedList();
-        //2 2 2 3 3 5 5 5 5 5
+        //1,2,3,3,4,4,5
+		//1,1,1,2,3
         list.addLast(1);
         list.addLast(1);
-        list.addLast(2);
-        list.addLast(3);
-        list.addLast(3);
-        list.addLast(5);
-        list.addLast(5);
-        list.addLast(5);
-        list.addLast(5);
-        list.addLast(5); 
+        list.addLast(1);
+		list.addLast(2);
+		list.addLast(3);
         list.display();
-        
         list.removeDuplicate();
-        
         list.display();
         
     }   
