@@ -5,7 +5,6 @@ public class  AddTwoNumbers_2 {
         private Node head;
         private Node tail;
         private int size;
-
         public void addFirst(int val) {
             Node temp=new Node(val);
             temp.next=this.head;

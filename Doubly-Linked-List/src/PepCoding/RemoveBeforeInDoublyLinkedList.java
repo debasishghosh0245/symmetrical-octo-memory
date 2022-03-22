@@ -1,30 +1,28 @@
 import java.io.*;
 import java.util.*;
-public class RemoveLastInDoublyLinkedList {
+public class RemoveBeforeInDoublyLinkedList {
     
     public static class LinkedList {
-		
         private ListNode head;
         private ListNode tail;
         private int size;
 		
-        public void addFrist(int data) {
-            ListNode node=new ListNode(data);
+        public void addFrist(ListNode node) {
             if(head==null){
 				head=tail=node;
-            }else{
+            }else {
 				node.next=head;
-				head.previous=node;
+				head.prev=node;
 				head=node;
             }
             size++;
         }
 		
-		public int removeLast(){
+		public int removeLast() {
 			int data=tail.data;
-			ListNode prev=tail.previous;
+			ListNode prev=tail.prev;
 			prev.next=null;
-			tail.previous=null;
+			tail.prev=null;
 			this.tail=prev;
 			size--;
 			return data;
@@ -35,17 +33,38 @@ public class RemoveLastInDoublyLinkedList {
             int length=length(head.next);
             return length+1;
         }
+		
+		public int removeBefore(ListNode refNode){
+			ListNode previous=refNode.prev;
+			int data=-1;
+			if(previous!=null){
+				data=previous.data;
+			}
+			if(previous==null){
+				System.out.println("LocationIsInvalid:");
+				return data;
+			}
+			else if(previous!=null && previous.prev==null){
+				head=head.next;
+				size--;
+			}
+			else{
+				previous.prev.next=refNode;
+				refNode.prev=previous.prev;
+				this.size--;
+			}
+			return data;
+		}
     }
 	
 	public static class ListNode {
-			
 		public ListNode next;
-		public ListNode previous;
+		public ListNode prev;
 		public int data;
 		ListNode(int data){
 			this.data=data;
 		}
-		ListNode(int data,ListNode next,ListNode previous){
+		ListNode(int data,ListNode next,ListNode prev){
 			this.data=data;
 			this.next=next;
 		}  
@@ -54,11 +73,18 @@ public class RemoveLastInDoublyLinkedList {
 	public static void main(String[] args) {
 
 		LinkedList list1=new LinkedList();
-		list1.addFrist(1);
-		list1.addFrist(2);
-		list1.addFrist(3);
+		ListNode node1=new ListNode(1);
+		ListNode node2=new ListNode(2);
+		ListNode node3=new ListNode(3);
+		ListNode node4=new ListNode(4);
+		ListNode node5=new ListNode(5);
+		list1.addFrist(node1);
+		list1.addFrist(node2);
+		list1.addFrist(node3);
+		list1.addFrist(node4);
+		list1.addFrist(node5);
 		display(list1.head);
-		System.out.println("Removed Last >>> "+list1.removeLast());
+		list1.removeBefore(node5);
 		display(list1.head);
 	}  
 

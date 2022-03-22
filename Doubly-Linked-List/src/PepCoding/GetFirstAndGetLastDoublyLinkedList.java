@@ -1,6 +1,6 @@
 import java.io.*;
 import java.util.*;
-public class RemoveLastInDoublyLinkedList {
+public class GetFirstAndGetLastDoublyLinkedList {
     
     public static class LinkedList {
 		
@@ -8,7 +8,7 @@ public class RemoveLastInDoublyLinkedList {
         private ListNode tail;
         private int size;
 		
-        public void addFrist(int data) {
+        public void addFrist(int data){
             ListNode node=new ListNode(data);
             if(head==null){
 				head=tail=node;
@@ -20,7 +20,7 @@ public class RemoveLastInDoublyLinkedList {
             size++;
         }
 		
-		public int removeLast(){
+		public int removeLast() {
 			int data=tail.data;
 			ListNode prev=tail.previous;
 			prev.next=null;
@@ -35,6 +35,16 @@ public class RemoveLastInDoublyLinkedList {
             int length=length(head.next);
             return length+1;
         }
+		
+		public int getFirst() {
+			if (this.size==0) return -1;
+			return head.data;
+		}
+
+		public int getLast() {
+			if (this.size==0) return -1;
+			return tail.data;
+		}
     }
 	
 	public static class ListNode {
@@ -57,9 +67,9 @@ public class RemoveLastInDoublyLinkedList {
 		list1.addFrist(1);
 		list1.addFrist(2);
 		list1.addFrist(3);
-		display(list1.head);
-		System.out.println("Removed Last >>> "+list1.removeLast());
-		display(list1.head);
+		display(list1.head);		
+		System.out.println("First -- >> "+list1.getFirst());
+		System.out.println("Last  -- >> "+list1.getLast());
 	}  
 
 	public static void display(ListNode head) {

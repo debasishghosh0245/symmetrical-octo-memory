@@ -88,9 +88,9 @@ public class OddEvenLinkedList{
 			while(null!=current){
 				ListNode next=current.next;
 				if(current.data%2!=0){
-					 oddListNodeTail.next=current;
-					 current.next=null;
-					 oddListNodeTail=oddListNodeTail.next;
+					oddListNodeTail.next=current;
+					current.next=null;
+					oddListNodeTail=oddListNodeTail.next;
 				}else{
 					evenListNodeTail.next=current;
 					current.next=null;

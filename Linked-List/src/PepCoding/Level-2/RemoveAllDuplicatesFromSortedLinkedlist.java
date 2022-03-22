@@ -56,28 +56,29 @@ public class RemoveAllDuplicatesFromSortedLinkedlist{
 	//Spce Complexicy :O(1) because we don't allocate any additional data structure.
 	//Time complexity :O(N) since it's one pass along the input list.
     public void removeDuplicate() {
-		Node sentinel=new Node(-1);
-		Node prev=sentinel;
+		Node dummyHead=new Node(-1);
+		Node dummyTail=dummyHead;
 		Node current=head;
         while(current!=null) {
 			//if it is begining of duplicate sublist 
 			//remove all duplicates 
-			if(null!=current.next && current.data==current.next.data){
+			if(null!=current.next 
+				&& current.data==current.next.data){
 				//move to the end of the duplicate sublist
 				while(null!=current.next && 
 					current.data==current.next.data){
 					current=current.next;
 				}
 				//skip all duplicates 
-				prev.next=current.next;
+				dummyTail.next=current.next;
 			}else {
 				//otherwise move predecessor
-				prev=prev.next;
+				dummyTail=dummyTail.next;
 			}
 			//move forward
 			current=current.next;
         }
-		head=sentinel.next;
+		head=dummyHead.next;
     }
 }
 

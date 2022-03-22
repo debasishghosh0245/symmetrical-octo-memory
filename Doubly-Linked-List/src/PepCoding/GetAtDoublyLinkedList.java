@@ -1,6 +1,6 @@
 import java.io.*;
 import java.util.*;
-public class RemoveLastInDoublyLinkedList {
+public class GetAtDoublyLinkedList {
     
     public static class LinkedList {
 		
@@ -35,6 +35,22 @@ public class RemoveLastInDoublyLinkedList {
             int length=length(head.next);
             return length+1;
         }
+		
+		public int getAt(int index) {
+			if(this.size==0) {
+				return -1;
+			}
+			else if(index < 0 || index > this.size-1) {
+				return -1;
+			}
+			else {
+				ListNode curr=head;
+				while(null!=curr && index-->0){
+					curr=curr.next;
+				}
+				return curr.data;
+			}
+		}
     }
 	
 	public static class ListNode {
@@ -56,10 +72,11 @@ public class RemoveLastInDoublyLinkedList {
 		LinkedList list1=new LinkedList();
 		list1.addFrist(1);
 		list1.addFrist(2);
-		list1.addFrist(3);
-		display(list1.head);
-		System.out.println("Removed Last >>> "+list1.removeLast());
-		display(list1.head);
+		list1.addFrist(3); //2
+		list1.addFrist(4);
+		list1.addFrist(5);
+		
+		System.out.println(list1.getAt(4));
 	}  
 
 	public static void display(ListNode head) {
