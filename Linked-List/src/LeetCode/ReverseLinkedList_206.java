@@ -1,5 +1,4 @@
 package LeetCode;
-
 public class ReverseLinkedList_206 {
     public static void main(String[] args) {
         SinglyLinkedList linkedList = new SinglyLinkedList();
