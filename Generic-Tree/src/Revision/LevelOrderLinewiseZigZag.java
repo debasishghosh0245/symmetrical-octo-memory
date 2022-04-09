@@ -41,45 +41,64 @@ public class LevelOrderLinewiseZigZag {
 		return root;
 	}
 	
-	public static void levelOrderTraversal(TreeNode root){
-		Stack<TreeNode> stack=new Stack<>();
-		stack.push(root);
-		boolean odd=true;
-		while(!stack.isEmpty()){
-			int level=stack.size();
-			for(int i=0;i<level;i++){
-				TreeNode node=stack.pop();
-				System.out.print(node.data+" ");
-				if(odd){
-					for(TreeNode child: node.children){
-						stack.push(child);
+	public static void levelOrderTraversal(TreeNode root) {
+		LinkedList<TreeNode> queue=new LinkedList<>();
+		queue.addFirst(root);
+		int level=1;
+		while(!queue.isEmpty()){
+			int size=queue.size();
+			for(int i=0;i<size;i++){
+				if(level%2!=0){
+					TreeNode node=queue.removeFirst();
+					System.out.print(node.data+" ");
+					if(node.children.size()>0){
+						for(TreeNode child: node.children) {
+							queue.addLast(child);
+						}
 					}
 				}else{
-					for(int j=node.children.size()-1;j>=0;j--){
-						stack.push(node.children.get(j));
+					TreeNode node=queue.removeLast();
+					System.out.print(node.data+" ");
+					if(node.children.size()>0){
+						for(int j=node.children.size()-1;j>=0;j--) {
+							queue.addFirst(node.children.get(j));
+						}
 					}
 				}
 			}
-			odd=(odd==true) ? false : true;
+			level++;
 			System.out.println();
 		}
 	}
 	
-	public static void levelOrderTraversalII(TreeNode root){
-		Queue<TreeNode> mainQueue=new ArrayDeque<>();
+	public static void levelOrderTraversalI(TreeNode root){
+		Stack<TreeNode> mainStack=new Stack<>();
 		Queue<TreeNode> childQueue=new ArrayDeque<>();
-		mainQueue.add(root);
-		while(!mainQueue.isEmpty()){
-			TreeNode node=mainQueue.remove();
+		mainStack.add(root);
+		int level=1;
+		while(!mainStack.isEmpty()){
+			TreeNode node=mainStack.pop();
 			System.out.print(node.data+" ");
-			for(TreeNode child: node.children){
-				childQueue.add(child);
+			if(level%2==0){
+				if(node.children.size()>0){
+					for(int j=node.children.size()-1;j>=0;j--){
+					childQueue.add(node.children.get(j));
+					}
+				}
 			}
-			if(mainQueue.isEmpty()){
+			else{
+				if(node.children.size()>0){
+					for(TreeNode child: node.children){
+						childQueue.add(child);
+					}
+				}
+			}
+			if(mainStack.isEmpty()){
 				System.out.println(" ");
 				while(!childQueue.isEmpty()){
-					mainQueue.add(childQueue.remove());
+					mainStack.add(childQueue.remove());
 				}
+				level++;
 			}
 		}
 	}
@@ -88,7 +107,7 @@ public class LevelOrderLinewiseZigZag {
 		int[] arr={10,20,50,-1,60,-1,-1,30,70,-1,80,110,-1,
 		120,-1,-1,90,-1,-1,40,100,-1,-1,-1};
 		TreeNode node=construct(arr);
-		levelOrderTraversal(node);			
+		levelOrderTraversalI(node);			
 	}
 	
 }
