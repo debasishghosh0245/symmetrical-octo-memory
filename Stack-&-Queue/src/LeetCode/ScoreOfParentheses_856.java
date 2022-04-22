@@ -7,7 +7,6 @@ public class ScoreOfParentheses_856{
 	 }
 	 
 	 public static int scoreOfParentheses(String str){
-		 int sum=0;
 		 int sumOfTop=0;
 		 Stack<Integer> stack=new Stack<>();
 		 for(int i=0;i<str.length();i++){
