@@ -18,7 +18,6 @@ public class RemoveOutermostParentheses_1021{
 			   stack.push(ch);		
 			} 
 			else{
-			   char top=stack.pop();
 			   if(stack.size()>0){
 				  output=output.append(ch);  
 			   }

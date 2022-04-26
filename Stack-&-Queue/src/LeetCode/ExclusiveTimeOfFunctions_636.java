@@ -3,20 +3,19 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 public class ExclusiveTimeOfFunctions_636{
-
-    
+	
 	public static void main(String[] args){
 		int n = 2; 
-		//String logs="0:start:0","0:start:2","0:end:5","0:start:6","0:end:6","0:end:7";
+		//String logs=""0:start:0","0:start:2","0:end:5","1:start:6","1:end:6","0:end:7"";
 		//"0:start:0","0:start:1","0:start:2","0:end:3","0:end:4","0:end:5"
 		// 5-2 // 3 //
 		List<String> list=new ArrayList<>();
 		list.add("0:start:0"); 
-		list.add("0:start:1");
 		list.add("0:start:2");
-		list.add("1:end:3");  
-		list.add("1:end:4");  
 		list.add("0:end:5");
+		list.add("1:start:6");  
+		list.add("1:end:6");  
+		list.add("0:end:7");
 		int[] result=exclusiveTime(n,list);
 		System.out.println(Arrays.toString(result));
 	}
@@ -31,10 +30,11 @@ public class ExclusiveTimeOfFunctions_636{
 				 int executionTime=(Integer.parseInt(logArr[2])-function.startTime+1)-
 				 function.childExecutionTime;
 				 System.out.println(executionTime);
-				 result[function.id]+=executionTime;
+				 
 				 if(!stack.isEmpty()){
 					stack.peek().childExecutionTime+=executionTime+function.childExecutionTime;  
 				 }
+				 result[function.id]+=executionTime;
 			}
 			else{
 				Function function=new Function();
@@ -56,6 +56,4 @@ public class ExclusiveTimeOfFunctions_636{
 			 return id+" "+startTime+" "+childExecutionTime;
 		 }
 	}
-
-
 }
