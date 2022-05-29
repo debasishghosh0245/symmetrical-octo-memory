@@ -2,8 +2,8 @@ import java.util.*;
 public class MaximalRectangle_85{
 	
 	public static void main(String[] args){
-		char[][] matrix={{'1','0','1','0','0'},{'1','0','1','1','1'},
-		{'1','1','1','1','1'},{'1','0','0','1','0'}};
+		// char[][] matrix={{'1','0','1','0','0'},{'1','0','1','1','1'},
+		// {'1','1','1','1','1'},{'1','0','0','1','0'}};
 		char[][] matrix2={{'0','1'},{'1','0'}};
 		System.out.println(maximumRectangle(matrix2));
 	}

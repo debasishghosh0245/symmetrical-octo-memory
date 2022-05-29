@@ -4,7 +4,7 @@ public class OnlineStockSpan_901{
 	Stack<Pair> stack=null;
 	int count=0;
 	public static void main(String[] args){
-		int[] price={100,80,60,70,60,75,85};
+		//int[] price={100,80,60,70,60,75,85};
 		OnlineStockSpan_901 stockSp=new OnlineStockSpan_901();
 		System.out.println(stockSp.next(100));
 		System.out.println(stockSp.next(80));
