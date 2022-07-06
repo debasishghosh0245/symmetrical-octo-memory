@@ -1,41 +1,50 @@
-import java.util.Stack;
-
-public class OnlineStockSpan_901 {
-
-
-    Stack<int[]> stack = null;
-
-    public OnlineStockSpan_901() {
-        stack = new Stack<>();
+import java.util.*;
+public class OnlineStockSpan_901{
+	
+	Stack<Pair> stack=null;
+	int count=0;
+	public static void main(String[] args){
+		int[] price={100,80,60,70,60,75,85};
+		OnlineStockSpan_901 stockSp=new OnlineStockSpan_901();
+		System.out.println(stockSp.next(100));
+		System.out.println(stockSp.next(80));
+		System.out.println(stockSp.next(60));
+		System.out.println(stockSp.next(70));
+		System.out.println(stockSp.next(60));
+		System.out.println(stockSp.next(75));
+		System.out.println(stockSp.next(85));
+	}
+	
+	public static class Pair{
+		public int price;
+		public int index;
+		
+		Pair(){
+		}
+		Pair(int price, int index){
+			 this.price=price;
+			 this.index=index;
+		}
+	}
+	
+	public OnlineStockSpan_901() {
+        stack=new Stack<>();
     }
-
-    public static void main(String[] args) {
-
-        /* ["StockSpanner", "next", "next", "next", "next", "next", "next", "next"]
-          [[], [100], [80], [60], [70], [60], [75], [85]]
-           Output
-          [null, 1, 1, 1, 2, 1, 4, 6] */
-        OnlineStockSpan_901 stackspan = new OnlineStockSpan_901();
-        System.out.println(stackspan.next(100));
-        System.out.println(stackspan.next(80));
-        System.out.println(stackspan.next(60));
-        System.out.println(stackspan.next(70));
-        System.out.println(stackspan.next(60));
-        System.out.println(stackspan.next(75));
-        System.out.println(stackspan.next(85));
-    }
-
+    
     public int next(int price) {
-        int result = 1;
-        if (stack.isEmpty()) {
-            stack.push(new int[]{price, result});
-            return result;
-        }
-        while (!stack.isEmpty() && stack.peek()[0] <= price) {
-            result += stack.pop()[1];
-        }
-        stack.push(new int[]{price, result});
-        return result;
+		int span=0;
+		while(!stack.isEmpty() 
+				&&  stack.peek().price < price) {
+			stack.pop();
+		}
+		if(stack.isEmpty()){
+			span=count+1;
+		}else{
+			span=count-stack.peek().index;
+		}
+		Pair pair=new Pair(price,count);
+		stack.push(pair);
+		count++;
+		return span;
     }
-
 }

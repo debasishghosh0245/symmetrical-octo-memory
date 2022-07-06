@@ -3,8 +3,8 @@ public class RemoveDuplicateLetters_316{
 
 	public static void main(String[] args){
 		//String str="abacb";
-		String str1="bcabc";
-		String str2="cbacdcbc";
+		//String str1="bcabc";
+		//String str2="cbacdcbc";
 		String str3="bbcaac";
 		System.out.println(removeDuplicateLetters(str3));
 	}
