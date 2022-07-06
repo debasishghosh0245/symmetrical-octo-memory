@@ -1,10 +1,9 @@
 public class BestTimeBuyAndSellStockII_122{
 
 	public static void main(String[] args){
-		 int[] prices ={7,1,5,3,6,4};
-		//int[] prices={1,2,3,4,5};
+		int[] prices ={7,1,5,3,6,4};
 		Integer[][] memo=new Integer[prices.length][2];
-		System.out.println(maxProfitTabular_SpaceOptimized(prices));
+		System.out.println(maxProfitTabular(prices));
 	}
 	
 	//Approach1: Recursive 
@@ -43,13 +42,13 @@ public class BestTimeBuyAndSellStockII_122{
 		return profit;
     } 
 	
-	//approach 3: Top - Down  
+	//Approach 3: Top - Down  
 	public static int maxProfitTabular(int[] prices) {
-		int[][] dp=new int[prices.length+1][2];
-		for(int day=dp.length-1;day>=0;day--){
+		int[][] dp=new int[prices.length][2];
+		for(int day=prices.length-1;day>=0;day--){
 			for(int isBuy=0;isBuy<=1;isBuy++){
-				if(day==dp.length-1){
-					dp[day][isBuy]=0;
+				if(day==prices.length-1){
+					dp[day][1]=0;
 				}else{
 					int profit=0;
 					if(isBuy==1){
@@ -61,7 +60,7 @@ public class BestTimeBuyAndSellStockII_122{
 						int profitWithSell=prices[day]+dp[day+1][1];
 						int profitWithNotSell=0+dp[day+1][0];
 						profit=Math.max(profitWithSell,profitWithNotSell);
-					} 
+					}
 					dp[day][isBuy]=profit;
 				}
 			}
@@ -75,32 +74,5 @@ public class BestTimeBuyAndSellStockII_122{
 			System.out.println("");
 		}
 		return dp[0][1];
-    } 
-	
-	public static int maxProfitTabular_SpaceOptimized(int[] prices) {		
-		int[] current=new int[2];
-		int[] previous=new int[2];
-		for(int day=prices.length-1;day>=0;day--){
-			for(int isBuy=0;isBuy<=1;isBuy++){
-				if(day==prices.length-1){
-					current[isBuy]=0;
-				}else{
-					int profit=0;
-					if(isBuy==1){
-						int profitWithBuy=-prices[day]+previous[0];
-						int profitWithNotBuy=0+previous[1];
-						profit=Math.max(profitWithBuy,profitWithNotBuy);
-					}
-					else {
-						int profitWithSell=prices[day]+previous[1];
-						int profitWithNotSell=0+previous[0];
-						profit=Math.max(profitWithSell,profitWithNotSell);
-					} 
-					current[isBuy]=profit;
-					previous=current;
-				}
-			}
-		}
-		return current[1];
     } 
 }

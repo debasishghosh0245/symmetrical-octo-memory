@@ -20,7 +20,8 @@ public class LongestIncreasingSubsequence_300 {
 	}
 
 	// Approach 2 : Memorization // Bottom -up
-	public static int longestIncreasingSubseqMemo(int[] nums, int idx, int lastIdx, Integer[][] memo) {
+	public static int longestIncreasingSubseqMemo(int[] nums, int idx, int lastIdx,
+		Integer[][] memo) {
 		if (idx >= nums.length)
 			return 0;
 		if (memo[idx][lastIdx + 1] != null)
