@@ -1,5 +1,6 @@
 import java.util.*;
-public class BurningTreeII_BFS{
+public class AllNodesDistanceKInBinaryTree_863_BFS{
+
     public static class TreeNode{
         int val;
         TreeNode left;
@@ -11,9 +12,6 @@ public class BurningTreeII_BFS{
             this.val=val;
             this.left=left;
             this.right=right;
-        }
-        public String toString(){
-            return " "+val+" ";
         }
     }
     public static int idx=0;
@@ -39,59 +37,57 @@ public class BurningTreeII_BFS{
         display(root.right);
     }
 
-    public static void buildGraph(TreeNode root,HashMap<Integer,List<Integer>> graph){
-        if(root==null) return;
-        graph.putIfAbsent(root.val,new ArrayList<Integer>());
+    //Convert Binary Tree as undirected graph
+    public static HashMap<Integer,List<Integer>> buildGraph(TreeNode root, HashMap<Integer,List<Integer>> graph){
+        if(root==null) return graph;
+        graph.putIfAbsent(root.val,new ArrayList<>());
         if(root.left!=null){
             graph.get(root.val).add(root.left.val);
-            graph.putIfAbsent(root.left.val,new ArrayList<Integer>());
+            graph.putIfAbsent(root.left.val,new ArrayList<>());
             graph.get(root.left.val).add(root.val);
         }
         if(root.right!=null){
             graph.get(root.val).add(root.right.val);
-            graph.putIfAbsent(root.right.val,new ArrayList<Integer>());
+            graph.putIfAbsent(root.right.val,new ArrayList<>());
             graph.get(root.right.val).add(root.val);
         }
         buildGraph(root.left,graph);
         buildGraph(root.right,graph);
+        return graph;
     }
 
-    public static ArrayList<ArrayList<Integer>> burnTree(HashMap<Integer,List<Integer>> graph,
-        int target,HashMap<Integer,Boolean> visited){
-        Queue<Integer> queue=new ArrayDeque<>();
-        ArrayList<ArrayList<Integer>> list=new ArrayList<>();
-        queue.offer(target);
+    public static List<Integer> distanceKBSF(HashMap<Integer,List<Integer>> graph,int k,int src,
+        HashMap<Integer,Boolean> visited){
+        Queue<Integer> queue=new LinkedList<>();
+        List<Integer> list=new ArrayList<>();
+        queue.add(src);
         while(!queue.isEmpty()){
             int size=queue.size();
-            ArrayList<Integer> temp=new ArrayList<>();
             while(size-->0){
-                int currNodeVal=queue.poll();
-                temp.add(currNodeVal);
-                List<Integer> neighbours=graph.get(currNodeVal);
-                if(neighbours.size()>0){
-                    for(Integer val:neighbours){
-                        if(visited.getOrDefault(val,false)==false){
-                            visited.put(currNodeVal,true);
-                            queue.offer(val);
+                int currNodeVal=queue.remove();
+                if(k==0){
+                    list.add(currNodeVal);
+                }
+                List<Integer> edges=graph.get(currNodeVal);
+                if(edges!=null){
+                    for(int edge:edges){
+                        if(visited.getOrDefault(edge,false)==false){
+                            visited.put(edge,true);
+                            queue.offer(edge);
                         }
                     }
                 }
             }
-            list.add(temp);
-            System.out.println("Queue >>"+queue);
+            k--;
         }
         return list;
     }
 
     public static void main(String[] args){
-        Integer[] nums={12,13,null,null,10,14,21,null,null,24,null,null,15,22,null,null,23,null,null};
+        Integer[] nums={3,5,6,null,null,2,7,null,null,4,null,null,1,0,null,null,8,null,null};
+        int k=1;
         TreeNode root=construct(nums);
-        //display(root);
-        HashMap<Integer,List<Integer>> graph=new HashMap<>();
-        buildGraph(root,graph);
-        System.out.println(graph);
-        HashMap<Integer,Boolean> visited=new HashMap<>();
-        TreeNode target=root.right.left;
-        System.out.println(burnTree(graph,target.val,visited));
+        TreeNode target=root.left.right;
+        distanceK(root,target,k);
     }
 }
