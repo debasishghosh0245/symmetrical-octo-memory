@@ -1,74 +1,59 @@
 import java.util.*;
 public class ConstructBinaryTreeFromString_536{
-    
-    private static class Node {
-        int data;
-        Node left;
-        Node right;
-        Node(){
-        }
-        Node(int data){
-            this.data=data;
-        }
-        Node(int data, Node left, Node right) {
-            this.data = data;
-            this.left = left;
-            this.right = right;
-        }
-    }
-    
-    private static class Pair {
-        Node node;
-        int state;
-        Pair(Node node, int state) {
-            this.node = node;
-            this.state = state;
-       }
-    }
 
-    private static void display(Node node) {
-        if (node == null) {
-            return;
+    public static class TreeNode{
+        int val;
+        TreeNode left;
+        TreeNode right;
+        TreeNode(int val){
+            this.val=val;
         }
-        String str = "";
-        str += node.left == null ? "." : node.left.data + "";
-        str += " <- " + node.data + " -> ";
-        str += node.right == null ? "." : node.right.data + "";
-        System.out.println(str);
-        display(node.left);
-        display(node.right);
+        TreeNode(int val,TreeNode left,TreeNode right){
+            this.val=val;
+            this.left=left;
+            this.right=right;
+        }
     }
-
-    public static void main(String[] args) throws Exception {
-        StringBuilder str=new StringBuilder("-4(2(3)(1))(6(5)(7))");
-        //StringBuilder str=new StringBuilder("4(2(3)(1))(6(5)(7))");
-        //StringBuilder str=new StringBuilder("4");
-        Node root2=deserialized(str,new Node());
-        display(root2);
+    public static class WrappableInteger{
+        int val;
+        WrappableInteger(int val){
+            this.val=val;
+        }
+        public int getValue(){
+            return this.val;
+        }
+        public void increment(){
+            this.val++;
+        }
     }
-    private static int idx=0;
-    private static boolean isNegative=false;
-    private static Node deserialized(StringBuilder str,Node node) {
-      if(idx>str.length()) return null;
-      if(str.charAt(idx)=='-') {
-           idx++;
-           isNegative=true;
-      }
-      if(str.charAt(idx)==')') {
+    public static TreeNode buildTree(String[] arr,WrappableInteger idx){
+        System.out.println(Arrays.toString(arr));
+        if(idx.getValue()==arr.length) return null;
+        if(arr[idx.getValue()]==null){
+            idx.increment();
             return null;
-      }
-      if(str.charAt(idx)=='(') {
-            idx++;
-      }
-      if(isNegative){
-         node=new Node(-Integer.parseInt(str.charAt(idx++)+"")); 
-         isNegative=false;
-      }else{
-         node=new Node(Integer.parseInt(str.charAt(idx++)+"")); 
-      }      
-      node.left=deserialized(str,node); 
-      node.right=deserialized(str,node);
-      idx++;
-      return node;   
-    }   
+        }
+        TreeNode root=new TreeNode(Integer.parseInt(arr[idx.getValue()]));
+        idx.increment();
+        root.left=buildTree(arr,idx);
+        root.right=buildTree(arr,idx);
+        return root;
+    }
+
+    public static void display(TreeNode root){
+        if(root==null) return;
+        StringBuilder sb=new StringBuilder();
+        sb.append(root.left==null ? "-" :root.left.val);
+        sb.append(" < "+root.val+" > ");
+        sb.append(root.right==null ? "-" :root.right.val);
+        System.out.println(sb);
+        display(root.left);
+        display(root.right);
+    }
+
+    public static void main(String[] args){
+        String str="4(2(3)(1))(6(5))";
+        TreeNode root=buildTree(str.split("\\("),new WrappableInteger(0));
+        display(root);
+    }
 }
