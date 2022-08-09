@@ -8,7 +8,6 @@ public class ConcatenatedWords_472{
     ConcatenatedWords_472(){
         root=new TrieNode();
     }
-
     public static void insert(String word){
         TrieNode curr=root;
         for(int i=0;i<word.length();i++){

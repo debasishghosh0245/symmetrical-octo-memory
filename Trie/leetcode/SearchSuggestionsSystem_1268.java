@@ -2,32 +2,24 @@ import java.util.*;
 public class SearchSuggestionsSystem_1268{
     public static void main(String[] args){
         Trie trie=new Trie();
+        //String[] products={"havana"};
         String[] products={"mobile","mouse","moneypot","monitor","mousepad"};
+        String searchWord="tmouse";
         for(String product: products){
             trie.insert(product);
         }
-        trie.display(trie.root);
-        String searchWord="mouse";
-    }
-}
-public static void dfs(TreeNode root,String searchWord){
-    PriorityQueue<TrieNode> maxHeap=new LinkedList<>();
-    for(Map.Entry<Character,TrieNode> entry:root.children){
-
-        if(maxHeap.size()>3){
-            maxHeap.pop();
+        List<List<String>> ans=new ArrayList<>();
+        for(int i=0;i<searchWord.length();i++){
+            ans.add(trie.search(searchWord.substring(0,i+1)));
         }
-        maxHeap.offer(entry.getValue());
-    }
-    while(!maxHeap.isEmpty()){
-        dfs(maxHeap.pop());
+        System.out.println(ans);
     }
 }
 class Trie{
     TrieNode root;
     public static class TrieNode{
         String word;
-        HashMap<Character,TrieNode> children=new HashMap<>();
+        TreeMap<Character,TrieNode> children=new TreeMap<>();
     }
     Trie(){
         root=new TrieNode();
@@ -41,26 +33,32 @@ class Trie{
         }
         curr.word=word;
     }
-
-    public static List<String> search(String searchWord){
+    public List<String> search(String prefix){
+        List<String> result=new ArrayList<>();
         TrieNode curr=root;
-        for(int i=0;i<searchWord.length();i++){
-            char ch=charAt(i);
-            if(root.children.containsKey(cur)){
-                curr=root.childen.get(curr);
+        for(int i=0;i<prefix.length();i++){
+            char ch=prefix.charAt(i);
+            if(!curr.children.containsKey(ch)){
+                return new ArrayList<>();
             }
+            curr=curr.children.get(ch);
         }
-
+        dfs(curr,result,new StringBuilder(prefix));
+        return result;
     }
-
-    public void display(TrieNode root){
-        for(Map.Entry<Character,TrieNode> entry: root.children.entrySet()){
-            System.out.print(entry.getKey()+"");
-            TrieNode child=entry.getValue();
-            display(child);
-            if(child.word!=null){
-                System.out.println(" ");
-            }
-        }
+    public List<String> dfs(TrieNode root,List<String> result,StringBuilder sb){
+        if (result.size() == 3)
+			return result;
+        if (root.word != null) {
+			result.add(sb.toString());
+		}
+		for (Map.Entry<Character, TrieNode> entry : root.children.entrySet()) {
+			Character ch = entry.getKey();
+			TrieNode child = entry.getValue();
+			sb.append(entry.getKey());
+            dfs(child,result,sb);
+			sb.deleteCharAt(sb.length() - 1);
+		}
+        return result;
     }
 }
