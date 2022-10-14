@@ -25,7 +25,7 @@ public class PrintAllPaths{
 		boolean[] visited=new boolean[vertices];
 		printAllPath(0,6,graph,visited,"");
 	}
-	
+
 	public static class Edge{
 		int source;
 		int neighbour;
@@ -36,25 +36,26 @@ public class PrintAllPaths{
 			this.neighbour=neighbour;
 			this.weight=weight;
 		}
-		
+
 		public String toString(){
 			return "source >> "+this.source+" neighbour >> "+this.neighbour+" wight>>  "+this.weight;
 		}
 	}
-	
+
 	public static void printAllPath(int source,int dest,
-	ArrayList<Edge>[] graph,boolean[] visited,String pathsofar){
-		if(source==dest) {
-			System.out.println(pathsofar+dest);
-			return;
-		}
-		ArrayList<Edge> neighbours=graph[source];
-		for(Edge edge: neighbours){
-			if(visited[edge.neighbour]==false){
-				visited[edge.source]=true;
-				printAllPath(edge.neighbour,dest,graph,visited,pathsofar+edge.source);
-				visited[edge.source]=false;
+		ArrayList<Edge>[] graph,boolean[] visited,String pathsofar){
+			if(source==dest) {
+				System.out.println(pathsofar+dest);
+				return;
 			}
-		}
+			ArrayList<Edge> neighbours=graph[source];
+			for(Edge edge: neighbours){
+				if(visited[edge.neighbour]==false){
+					visited[edge.source]=true;
+					printAllPath(edge.neighbour,dest,graph,visited,
+					pathsofar+edge.source);
+					visited[edge.source]=false;
+				}
+		    }
 	}
 }

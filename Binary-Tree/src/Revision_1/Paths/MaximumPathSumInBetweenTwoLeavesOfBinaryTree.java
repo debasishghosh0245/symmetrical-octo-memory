@@ -50,11 +50,13 @@ public class MaximumPathSumInBetweenTwoLeavesOfBinaryTree{
         Pair left=maxPathSumLeafNode(root.left);
         Pair right=maxPathSumLeafNode(root.right);
         Pair pair=new Pair();
-        pair.maxRootToLeafPathSum=root.val+Math.max(left.maxRootToLeafPathSum,right.maxRootToLeafPathSum);
+        pair.maxRootToLeafPathSum=root.val+
+        Math.max(left.maxRootToLeafPathSum,right.maxRootToLeafPathSum);
         if(left.maxLeafToLeafPahSum!=0 && right.maxLeafToLeafPahSum!=0){
             pair.maxLeafToLeafPahSum=0;
         }else{
-            pair.maxLeafToLeafPahSum=Math.max(root.val+left.maxRootToLeafPathSum+right.maxRootToLeafPathSum,
+            pair.maxLeafToLeafPahSum=Math.max(root.val+left.maxRootToLeafPathSum+
+            right.maxRootToLeafPathSum,
             Math.max(left.maxLeafToLeafPahSum,right.maxLeafToLeafPahSum));
         }
         return pair;

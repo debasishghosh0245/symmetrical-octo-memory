@@ -9,14 +9,14 @@ public class OrderOfCompilation{
 		List<Edge>[] adjList=constructAdjList(grid,vertices);
 		for(int i=0;i<vertices;i++){
 		    if(visited[i]==false){
-				 dfs(adjList,i,visited,stack);	
+				 dfs(adjList,i,visited,stack);
 			}
 		}
 		while(!stack.isEmpty()){
 			System.out.print(stack.pop());
 		}
 	}
-	
+
 	public static class Edge{
 		int src;
 		int nbr;
@@ -28,7 +28,7 @@ public class OrderOfCompilation{
 			return " source >> "+this.src+" neighbour >> "+this.nbr;
 		}
 	}
-	
+
 	public static List<Edge>[] constructAdjList(int[][] grid, int vertices){
 		List<Edge>[] adjList=new ArrayList[vertices];
 		//initialization
@@ -40,11 +40,11 @@ public class OrderOfCompilation{
 			int dest=arr[1];
 			adjList[src].add(new Edge(src,dest));
 		}
-		
 		return adjList;
 	}
 
-	public static void dfs(List<Edge>[] graph,int src,boolean[] visited,Stack<Integer> stack){
+	public static void dfs(List<Edge>[] graph,int src,boolean[] visited,
+		Stack<Integer> stack){
 		visited[src]=true;
 		List<Edge> edges=graph[src];
 		for(Edge edge:edges){
@@ -54,8 +54,4 @@ public class OrderOfCompilation{
 		}
 		stack.push(src);
 	}
-	
-	
-
-
 }

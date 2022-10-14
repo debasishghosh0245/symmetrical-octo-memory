@@ -11,7 +11,8 @@ public class AllPathsFromSourceToTarget_797{
         // /bfs_iterative(graph,0,4);
     }
 
-    public static void dfs_recursive(int[][] graph,int src,int dest,List<List<Integer>> allpaths,List<Integer> pathSoFar){
+    public static void dfs_recursive(int[][] graph,int src,int dest,
+        List<List<Integer>> allpaths,List<Integer> pathSoFar){
         int[] neighbours=graph[src];
         if(src==dest){
             pathSoFar.add(src);

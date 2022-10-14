@@ -48,10 +48,13 @@ public class BinaryTreeMaximumPathSum_124 {
         }
         Pair leftPair=maxPathSum_01(root.left);
         Pair rightPair=maxPathSum_01(root.right);
+        int maxRootToNodePathSumLeft=Math.max(0,leftPair.maxRootToNodePathSum);
+        int maxRootToNodePathSumRight=Math.max(0,rightPair.maxRootToNodePathSum);
         Pair pair=new Pair();
-        pair.maxRootToNodePathSum=root.val+Math.max(leftPair.maxRootToNodePathSum,rightPair.maxRootToNodePathSum);
-        pair.maxPathSum=Math.max(Math.max(leftPair.maxPathSum,rightPair.maxPathSum),root.val
-        +leftPair.maxRootToNodePathSum+rightPair.maxRootToNodePathSum);
+        pair.maxRootToNodePathSum=root.val+
+            Math.max(maxRootToNodePathSumLeft,maxRootToNodePathSumRight);
+        pair.maxPathSum=Math.max(Math.max(leftPair.maxPathSum,rightPair.maxPathSum),
+            root.val+maxRootToNodePathSumLeft+maxRootToNodePathSumRight);
         return pair;
     }
 
@@ -72,7 +75,7 @@ public class BinaryTreeMaximumPathSum_124 {
         //Integer[] nums={-10,9,null,null,20,15,null,null,7,null,null};
         //Integer[] nums={1,-2,1,-1,null,null,null,3,null,null,-3,-2,null,null,null};
         //Integer[] nums={-3,null,null};
-        Integer[] nums={2,-1,null,null,null};
+        Integer[] nums={-2,-1,null,null,null};
         TreeNode root=construct(nums);
         display(root);
         maxPathSum_03(root);
